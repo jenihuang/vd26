@@ -677,6 +677,80 @@
             animation: fadeIn 0.4s ease;
         }
 
+        /* ══════════════════════════════════
+           PHOTO TIMELINE
+           ══════════════════════════════════ */
+        .photo-timeline {
+            max-width: 500px;
+            margin: 25px auto;
+            width: 100%;
+        }
+
+        .photo-timeline-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: #d63384;
+            margin-bottom: 20px;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .timeline-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(214, 51, 132, 0.15);
+            border: 3px solid rgba(214, 51, 132, 0.12);
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: timelineReveal 0.6s ease forwards;
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(214, 51, 132, 0.25);
+        }
+
+        @keyframes timelineReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .timeline-item img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        .timeline-year {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+            color: white;
+            padding: 20px 10px 8px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+        }
+
+        .timeline-year span {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 300;
+            display: block;
+            opacity: 0.85;
+            margin-top: 1px;
+        }
+
         /* ── Responsive ── */
         @media (max-width: 480px) {
             #welcome-screen .title { font-size: 2.2rem; }
@@ -688,6 +762,8 @@
             .hex-cell { width: 45px; height: 45px; font-size: 1rem; }
             .crossword-cell { width: 32px; height: 32px; font-size: 0.85rem; }
             .final-message { font-size: 2rem; }
+            .timeline-grid { gap: 10px; }
+            .timeline-year { font-size: 1.1rem; }
         }
 
         /* ── Background themes per level ── */
@@ -847,6 +923,52 @@ A love beyond any compare.
 My heart is yours, forevermore,
 You're the one that I adore.
 <!-- ✏️ END OF POEM — Replace above lines ✏️ -->
+            </div>
+        </div>
+
+        <div class="photo-timeline">
+            <div class="photo-timeline-title">Our Valentine's Day Memories</div>
+            <div class="timeline-grid">
+                <div class="timeline-item" style="animation-delay: 0s;">
+                    <img src="2016.png" alt="Valentine's Day 2016">
+                    <div class="timeline-year">2016 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 0.15s;">
+                    <img src="2017.png" alt="Valentine's Day 2017">
+                    <div class="timeline-year">2017 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 0.3s;">
+                    <img src="2018.png" alt="Valentine's Day 2018">
+                    <div class="timeline-year">2018 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 0.45s;">
+                    <img src="2019.png" alt="Valentine's Day 2019">
+                    <div class="timeline-year">2019 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 0.6s;">
+                    <img src="2020.png" alt="Valentine's Day 2020">
+                    <div class="timeline-year">2020 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 0.75s;">
+                    <img src="2021.png" alt="Valentine's Day 2021">
+                    <div class="timeline-year">2021 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 0.9s;">
+                    <img src="2022.png" alt="Valentine's Day 2022">
+                    <div class="timeline-year">2022 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 1.05s;">
+                    <img src="2023.png" alt="Valentine's Day 2023">
+                    <div class="timeline-year">2023 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 1.2s;">
+                    <img src="2024.png" alt="Valentine's Day 2024">
+                    <div class="timeline-year">2024 <span>Valentine's Day</span></div>
+                </div>
+                <div class="timeline-item" style="animation-delay: 1.35s;">
+                    <img src="2025.png" alt="Valentine's Day 2025">
+                    <div class="timeline-year">2025 <span>Valentine's Day</span></div>
+                </div>
             </div>
         </div>
 
