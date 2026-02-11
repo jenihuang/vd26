@@ -590,6 +590,58 @@
             animation: buzz 0.5s ease infinite alternate;
         }
 
+        .yes-no-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 25px;
+            min-height: 80px;
+            position: relative;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b9d, #ee5a6f);
+            color: white;
+            font-size: 1.4rem;
+            padding: 16px 50px;
+            box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4);
+            animation: pulseYes 1.5s ease infinite;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(238, 90, 111, 0.6);
+        }
+
+        @keyframes pulseYes {
+            0%, 100% { box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4); }
+            50% { box-shadow: 0 4px 30px rgba(238, 90, 111, 0.7); }
+        }
+
+        .btn-no {
+            background: #f0f0f0;
+            color: #999;
+            font-size: 0.9rem;
+            padding: 12px 30px;
+            transition: all 0.15s ease;
+            position: absolute;
+        }
+
+        .btn-no:hover {
+            background: #f0f0f0;
+            color: #999;
+        }
+
+        .reveal-header {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #d63384;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 8px rgba(214, 51, 132, 0.15);
+            animation: fadeIn 0.8s ease;
+        }
+
         .poem-container {
             background: white;
             border-radius: 20px;
@@ -903,11 +955,26 @@
     </div>
 
     <!-- ═══════════════════════════════════
-         FINAL REVEAL
+         FINAL QUESTION — Yes / No
          ═══════════════════════════════════ -->
     <div class="screen" id="final-screen">
         <div class="final-message" id="final-message-text"></div>
         <div class="final-bee">🐝</div>
+
+        <div class="yes-no-container" id="yes-no-buttons" style="display: none;">
+            <button class="btn btn-yes" onclick="sayYes()">Yes!</button>
+            <button class="btn btn-no" id="no-btn"
+                onmouseover="runAway(this)"
+                ontouchstart="runAway(this)">No</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════
+         REVEAL — Poem + Photos
+         ═══════════════════════════════════ -->
+    <div class="screen" id="reveal-screen">
+        <div class="reveal-header">They said yes!</div>
+        <div style="font-size: 3rem; margin: 10px 0;">🐝💕</div>
 
         <div class="poem-container">
             <div class="poem-title">For You, My Love</div>
@@ -1427,7 +1494,7 @@ You're the one that I adore.
     }
 
     /* ══════════════════════════════════
-       FINAL SCREEN
+       FINAL SCREEN — Question
        ══════════════════════════════════ */
     function showFinalScreen() {
         setBackground('bg-final');
@@ -1455,12 +1522,54 @@ You're the one that I adore.
             }, i * 600);
         });
 
-        // Big celebration
+        // Show Yes/No buttons after the message finishes
         setTimeout(() => {
-            for (let wave = 0; wave < 3; wave++) {
-                setTimeout(() => celebrate(), wave * 500);
-            }
-        }, words.length * 600 + 300);
+            const btns = document.getElementById('yes-no-buttons');
+            btns.style.display = 'flex';
+            btns.style.opacity = '0';
+            btns.style.transition = 'opacity 0.6s ease';
+            // Position the No button initially to the right of Yes
+            const noBtn = document.getElementById('no-btn');
+            noBtn.style.position = 'relative';
+            requestAnimationFrame(() => { btns.style.opacity = '1'; });
+        }, words.length * 600 + 400);
+    }
+
+    /* ══════════════════════════════════
+       RUNAWAY "NO" BUTTON
+       ══════════════════════════════════ */
+    function runAway(btn) {
+        const container = btn.closest('.screen');
+        const rect = container.getBoundingClientRect();
+
+        // Random position within the screen area
+        const maxX = rect.width - btn.offsetWidth - 20;
+        const maxY = rect.height - btn.offsetHeight - 20;
+
+        const newX = Math.random() * maxX - maxX / 2;
+        const newY = Math.random() * maxY - maxY / 2;
+
+        btn.style.position = 'absolute';
+        btn.style.left = (rect.width / 2 + newX) + 'px';
+        btn.style.top = (rect.height / 2 + newY) + 'px';
+        btn.style.transform = 'translate(-50%, -50%)';
+
+        // Shrink it a bit each time
+        const currentSize = parseFloat(btn.style.fontSize) || 0.9;
+        btn.style.fontSize = Math.max(0.6, currentSize - 0.05) + 'rem';
+    }
+
+    /* ══════════════════════════════════
+       "YES" — Reveal Poem + Photos
+       ══════════════════════════════════ */
+    function sayYes() {
+        setBackground('bg-final');
+        showScreen('reveal-screen');
+
+        // Big celebration
+        for (let wave = 0; wave < 5; wave++) {
+            setTimeout(() => celebrate(), wave * 400);
+        }
     }
     </script>
 </body>
