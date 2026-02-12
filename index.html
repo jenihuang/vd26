@@ -923,16 +923,16 @@ Happy Valentine's Day 2026
         }
     }
 
-    function checkLevel2Input() {
+function checkLevel2Input() {
         const val = document.getElementById('you-input').value.trim().toUpperCase();
         
-        // Accept YOU, U, or STEVEN (with a funny redirect for Steven)
-        if (val === 'YOU' || val === 'U') {
-            levelComplete('U');
-        } else if (val === 'STEVEN' || val === 'STEVE') {
+        // Accept YOU or U
+        if (val === 'YOU') {
+            levelComplete('you'); // <--- Change this to 'you'
+        } else if (val === 'STEVEN') {
             alert("Too formal! Who is he to me?");
         } else if (val === 'ME') {
-             alert("Not me... YOU!");
+             alert("Not me, but...");
         } else {
             const btn = document.querySelector('#you-input-container button');
             btn.style.animation = 'shake 0.4s ease';
@@ -1032,7 +1032,7 @@ Happy Valentine's Day 2026
 
     function checkLevel3Input() {
         const val = document.getElementById('bee-input').value.trim().toUpperCase();
-        if (val === 'BEE' || val === 'BE' || val === 'BEES') {
+        if (val === 'BEE') {
             levelComplete('bee');
         } else {
             const btn = document.querySelector('#bee-final-question button');
