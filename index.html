@@ -570,7 +570,7 @@
         <div class="revealed-words" id="words-display-3"></div>
 
         <div class="ws-word-list">
-            <div class="ws-word" id="word-HONEY">HONEY</div>
+            <div class="ws-word" id="word-SWEET">SWEET</div>
             <div class="ws-word" id="word-BUSY">BUSY</div>
             <div class="ws-word" id="word-WORKER">WORKER</div>
             <div class="ws-word" id="word-LOYAL">LOYAL</div>
@@ -587,7 +587,7 @@
         </div>
 
         <button class="hint-btn" onclick="showHint(3)">Need a hint?</button>
-        <div id="hint-3" style="display:none" class="hint-text">Look for words like 'HONEY' or 'BUSY'</div>
+        <div id="hint-3" style="display:none" class="hint-text">Look for words like 'SWEET' or 'BUSY'</div>
     </div>
 
 <div class="screen" id="level4-screen">
@@ -953,10 +953,10 @@ Happy Valentine's Day 2026
         gridEl.innerHTML = '';
 
         // 8x8 Grid (Indices 0 to 63)
-        // Hardcoded Placements (No overlaps for simplicity)
+        // Hardcoded Placements (No overlaps)
         const placements = {
             'WORKER': [1, 9, 17, 25, 33, 41],      // Vertical, Col 1
-            'HONEY':  [56, 57, 58, 59, 60],        // Horizontal, Row 7
+            'SWEET':  [56, 57, 58, 59, 60],        // Horizontal, Row 7 (Replaces HONEY)
             'BUSY':   [4, 5, 6, 7],                // Horizontal, Row 0
             'LOYAL':  [13, 21, 29, 37, 45]         // Vertical, Col 5
         };
@@ -995,7 +995,6 @@ Happy Valentine's Day 2026
     }
 
     function selectWSCell(cell) {
-        // If empty cell, shake
         if (!cell.dataset.word) {
             cell.style.animation = 'shake 0.4s ease';
             setTimeout(() => cell.style.animation = '', 400);
@@ -1015,10 +1014,8 @@ Happy Valentine's Day 2026
 
         if (allFound) {
             const label = document.getElementById('word-' + word);
-            
-            // Only count if not already revealed
             if (!label.classList.contains('revealed')) {
-                label.classList.add('revealed'); // This triggers the CSS reveal animation
+                label.classList.add('revealed');
                 foundWordsCount++;
                 
                 if (foundWordsCount === 4) {
@@ -1046,11 +1043,11 @@ Happy Valentine's Day 2026
     const originalStoryHTML = `
         <p class="story-text">
             I love the life we've built together so far. Even when the 
-            econo<span class="hidden-my" onclick="clickMy(this)">MY</span> 
+            econo<span class="hidden-my" onclick="clickMy(this)">my</span> 
             is stressful, our home feels 
-            drea<span class="hidden-my" onclick="clickMy(this)">MY</span>. 
+            drea<span class="hidden-my" onclick="clickMy(this)">my</span>. 
             There is a certain 
-            alche<span class="hidden-my" onclick="clickMy(this)">MY</span> 
+            alche<span class="hidden-my" onclick="clickMy(this)">my</span> 
             to how we make it all work as we continue to learn and grow together.
         </p>`;
 
