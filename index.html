@@ -301,21 +301,22 @@
         .rebus-option.wrong { background: #ffebee; border-color: #ef5350; color: #ef5350; animation: shake 0.4s ease; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
-        /* ── Word Search (Level 3) ── */
+/* ── Word Search (Level 3) ── */
         .ws-grid {
             display: grid;
-            grid-template-columns: repeat(7, 40px);
-            gap: 5px;
+            grid-template-columns: repeat(10, 30px); /* Changed to 10 cols */
+            gap: 3px;
             margin-bottom: 20px;
             background: rgba(255,255,255,0.5);
-            padding: 10px;
+            padding: 8px;
             border-radius: 15px;
+            justify-content: center;
         }
         .ws-cell {
-            width: 40px; height: 40px;
+            width: 30px; height: 30px;
             display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 1.1rem;
-            background: white; border-radius: 8px;
+            font-weight: bold; font-size: 0.9rem;
+            background: white; border-radius: 6px;
             cursor: pointer; color: #d63384;
             user-select: none;
             border: 1px solid #f0d0e0;
@@ -327,15 +328,15 @@
         @keyframes popIn { 0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         
         .ws-word-list {
-            display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;
+            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;
         }
         .ws-word {
-            font-size: 0.9rem; color: #888; text-transform: uppercase; letter-spacing: 1px;
-            padding: 4px 10px; background: rgba(255,255,255,0.6); border-radius: 4px;
+            font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;
+            padding: 4px 8px; background: rgba(255,255,255,0.6); border-radius: 4px;
             transition: all 0.3s ease;
         }
         .ws-word.found {
-            text-decoration: line-through; color: #d63384; opacity: 0.6;
+            text-decoration: line-through; color: #d63384; opacity: 0.6; font-weight: bold;
         }
 
         /* ── Level 4 ("my") ── */
@@ -842,18 +843,9 @@ Happy Valentine's Day 2026
         });
     }
 
-    /* ════════ LEVEL 3: BEE (WORD SEARCH) ════════ */
-    // Words hidden: WORKER, BUSY, HONEY, LOYAL
-    // Simple 7x7 Grid with words placed horizontally/vertically for simplicity
-    // Row 0: W O R K E R S
-    // Row 2: H O N E Y T A
-    // Row 4: B U S Y B C D
-    // Row 6: L O Y A L X Y
-    // (We will use dataset to track letters)
-    
+/* ════════ LEVEL 3: BEE (WORD SEARCH) ════════ */
     let foundWordsCount = 0;
-    const targets = ['HONEY', 'BUSY', 'WORKER', 'LOYAL'];
-
+    
     function initLevel3() {
         showScreen('level3-screen');
         updateWordsDisplay(3);
@@ -864,43 +856,57 @@ Happy Valentine's Day 2026
         const gridEl = document.getElementById('ws-grid');
         gridEl.innerHTML = '';
 
-        // Hardcoded grid layout for stability
-        // 7x7 grid
-        const letters = [
-            'W','O','R','K','E','R','S',  // Row 0: WORKER
-            'L','P','B','I','T','Z','L',
-            'H','O','N','E','Y','T','A',  // Row 2: HONEY
-            'Y','M','S','V','H','P','Y',
-            'B','U','S','Y','B','C','D',  // Row 4: BUSY
-            'A','N','Y','L','O','K','A',
-            'L','O','Y','A','L','X','Y'   // Row 6: LOYAL
-        ];
+        // 10x10 Grid (Indices 0 to 99)
+        // Hidden Words:
+        // WORKER (Vertical at col 1, row 1) -> Indices: 11, 21, 31, 41, 51, 61
+        // HONEY (Horizontal at row 8, col 2) -> Indices: 82, 83, 84, 85, 86
+        // BUSY (Vertical at col 8, row 2) -> Indices: 28, 38, 48, 58
+        // LOYAL (Horizontal at row 5, col 3) -> Indices: 53, 54, 55, 56, 57
 
-        // Map which indices belong to which word
-        // WORKER: 0-5
-        // HONEY: 14-18
-        // BUSY: 28-31
-        // LOYAL: 42-46
+        const cellsData = new Array(100).fill(null);
+
+        // Map word positions
+        const placements = {
+            'WORKER': [11, 21, 31, 41, 51, 61],
+            'HONEY':  [82, 83, 84, 85, 86],
+            'BUSY':   [28, 38, 48, 58],
+            'LOYAL':  [53, 54, 55, 56, 57]
+        };
+
+        // Fill grid with letters
+        // We use a specific string to make the random letters look like "distractors"
+        // (Lots of B, E, H, L, W to confuse the eye)
+        const distractors = "BBEEHHLWWWORKBUSYLOYALHONEYXZ"; 
         
-        for (let i = 0; i < 49; i++) {
+        for (let i = 0; i < 100; i++) {
+            let letter = distractors[Math.floor(Math.random() * distractors.length)];
+            let wordBelonging = null;
+
+            // Check if this index belongs to a target word
+            for (const [word, indices] of Object.entries(placements)) {
+                if (indices.includes(i)) {
+                    wordBelonging = word;
+                    // Find the letter in that word
+                    const letterIndex = indices.indexOf(i);
+                    letter = word[letterIndex];
+                    break;
+                }
+            }
+            cellsData[i] = { letter: letter, word: wordBelonging };
+        }
+
+        cellsData.forEach((data, i) => {
             const cell = document.createElement('div');
             cell.className = 'ws-cell';
-            cell.textContent = letters[i] || randomLetter();
-            
-            // Assign word data
-            if (i >= 0 && i <= 5) cell.dataset.word = 'WORKER';
-            if (i >= 14 && i <= 18) cell.dataset.word = 'HONEY';
-            if (i >= 28 && i <= 31) cell.dataset.word = 'BUSY';
-            if (i >= 42 && i <= 46) cell.dataset.word = 'LOYAL';
+            cell.textContent = data.letter;
+
+            if (data.word) {
+                cell.dataset.word = data.word;
+            }
 
             cell.onclick = () => selectWSCell(cell);
             gridEl.appendChild(cell);
-        }
-    }
-
-    function randomLetter() {
-        const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return abc[Math.floor(Math.random() * abc.length)];
+        });
     }
 
     function selectWSCell(cell) {
@@ -939,7 +945,7 @@ Happy Valentine's Day 2026
 
     function checkLevel3Input() {
         const val = document.getElementById('bee-input').value.trim().toUpperCase();
-        if (val === 'BEE' || val === 'BE') {
+        if (val === 'BEE' || val === 'BE' || val === 'BEES') {
             levelComplete('bee');
         } else {
             const btn = document.querySelector('#bee-final-question button');
