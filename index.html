@@ -204,73 +204,51 @@
             border-radius: 0 3px 3px 0;
         }
 
-        /* ── Scramble Tiles (Used in Level 5) ── */
-        .scramble-letters {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+/* ── Level 5 (Photo Drag) ── */
+        .letter-bank {
+            display: flex; gap: 5px; justify-content: center; margin-bottom: 20px; min-height: 50px;
+        }
+        .v-letter {
+            width: 40px; height: 50px; 
+            border-bottom: 3px solid #f0d0e0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: bold; color: #d63384;
+            font-family: 'Dancing Script', cursive;
+        }
+        .v-letter.revealed {
+            animation: popIn 0.5s ease;
         }
 
-        .scramble-tile {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #d63384;
-            background: white;
-            border: 2px solid #f0d0e0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
+        .timeline-drop-zone {
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px;
+            width: 100%; justify-content: flex-start; /* Allow scroll on small screens */
+        }
+        
+        .year-slot {
+            min-width: 80px; height: 100px;
+            border: 2px dashed #ccc; border-radius: 8px;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+            position: relative; background: rgba(255,255,255,0.5);
+            padding-bottom: 5px; font-size: 0.8rem; color: #666; font-weight: bold;
+        }
+        .year-slot.correct {
+            border-color: #28a745; border-style: solid; background: white;
         }
 
-        .scramble-tile:hover {
-            transform: scale(1.08);
-            border-color: #d63384;
-            box-shadow: 0 3px 12px rgba(214, 51, 132, 0.2);
+        .photo-bank {
+            display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; min-height: 80px;
         }
 
-        .scramble-tile.selected {
-            background: #d63384;
-            color: white;
-            border-color: #d63384;
-            transform: scale(0.95);
-            opacity: 0.5;
+        .draggable-photo {
+            width: 70px; height: 70px; object-fit: cover; border-radius: 6px;
+            cursor: grab; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid white; transition: transform 0.2s;
         }
-
-        .answer-slots {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-        }
-
-        .answer-slot {
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #d63384;
-            background: rgba(255, 255, 255, 0.6);
-            border: 2px dashed #f0d0e0;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .answer-slot.filled {
-            border-style: solid;
-            border-color: #d63384;
-            background: white;
+        .draggable-photo:active { cursor: grabbing; transform: scale(1.1); }
+        .draggable-photo.placed {
+            width: 100%; height: 80px; /* Fit into slot */
+            position: absolute; top: 0; left: 0; 
+            border-radius: 6px 6px 0 0; border: none;
         }
 
 /* ── Level 2 (Blur Slider) ── */
@@ -613,17 +591,32 @@
         <div id="hint-4" style="display:none" class="hint-text">Try clicking the ends of the bold words.</div>
     </div>
     
-    <div class="screen" id="level5-screen">
+<div class="screen" id="level5-screen">
         <div class="level-badge">Puzzle 5 of 5</div>
-        <div class="puzzle-title">The Final Word</div>
-        <div class="puzzle-instruction">Unscramble the letters to reveal the most important word!</div>
-        <div class="revealed-words" id="words-display-5"></div>
+        <div class="puzzle-title">Our Timeline</div>
+        <div class="puzzle-instruction">Drag each photo to the year it was taken to unlock the letters.</div>
         
-        <div class="scramble-letters" id="scramble-letters-5"></div>
-        <div class="answer-slots" id="answer-slots-5"></div>
+        <div class="revealed-words" id="words-display-5"></div>
+
+        <div class="letter-bank" id="letter-bank">
+            </div>
+
+        <div class="timeline-drop-zone" id="timeline-container">
+            </div>
+
+        <div class="photo-bank" id="photo-bank">
+            </div>
+
+        <div id="valentine-final-input" style="display: none; margin-top: 20px; animation: fadeIn 0.5s ease;">
+            <div class="puzzle-instruction" style="color: #d63384; font-weight: 600;">Unscramble the letters to answer: Will you be my...?</div>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <input type="text" class="puzzle-input" id="final-word-input" placeholder="Type answer">
+                <button class="btn btn-primary btn-small" onclick="checkLevel5Input()">OK</button>
+            </div>
+        </div>
 
         <button class="hint-btn" onclick="showHint(5)">Need a hint?</button>
-        <div id="hint-5" style="display:none" class="hint-text">It's a special day in February...</div>
+        <div id="hint-5" style="display:none" class="hint-text">Milo was born in 2019, Maya in 2021...</div>
     </div>
 
     <div class="screen" id="final-screen">
@@ -1083,61 +1076,135 @@ Happy Valentine's Day 2026
         }
     }
 
-    /* ════════ LEVEL 5: VALENTINE (SCRAMBLE) ════════ */
-    let scrambleAnswer5 = [];
+/* ════════ LEVEL 5: VALENTINE (PHOTO DRAG) ════════ */
+    // Years: 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 (9 Years)
+    // Word:  V     A     L     E     N     T     I     N     E    (9 Letters)
+    
+    const TARGET_WORD = "VALENTINE";
+    let revealedIndices = []; 
+    let correctPlacements = 0;
+
     function initLevel5() {
         showScreen('level5-screen');
         updateWordsDisplay(5);
-        scrambleAnswer5 = [];
+        revealedIndices = new Array(9).fill(false);
+        correctPlacements = 0;
+        document.getElementById('valentine-final-input').style.display = 'none';
 
-        const target = "VALENTINE";
-        const letters = target.split('').sort(() => Math.random() - 0.5);
+        // 1. Setup Letter Bank (Empty Slots)
+        const lBank = document.getElementById('letter-bank');
+        lBank.innerHTML = '';
+        for(let i=0; i<9; i++) {
+            const lDiv = document.createElement('div');
+            lDiv.className = 'v-letter';
+            lDiv.id = `v-letter-${i}`;
+            lDiv.textContent = ''; // Hidden initially
+            lBank.appendChild(lDiv);
+        }
 
-        const container = document.getElementById('scramble-letters-5');
-        container.innerHTML = '';
-        letters.forEach((l, i) => {
-            const tile = document.createElement('div');
-            tile.className = 'scramble-tile';
-            tile.textContent = l;
-            tile.onclick = () => selectScramble5(tile, l);
-            container.appendChild(tile);
+        // 2. Setup Timeline Slots (2017-2025)
+        const tContainer = document.getElementById('timeline-container');
+        tContainer.innerHTML = '';
+        const startYear = 2017;
+        for(let i=0; i<9; i++) {
+            const year = startYear + i;
+            const slot = document.createElement('div');
+            slot.className = 'year-slot';
+            slot.textContent = year;
+            slot.dataset.year = year;
+            
+            // Dragover event
+            slot.ondragover = (e) => e.preventDefault(); 
+            slot.ondrop = (e) => dropPhoto(e, year);
+            
+            tContainer.appendChild(slot);
+        }
+
+        // 3. Setup Photo Bank (Scrambled)
+        const pBank = document.getElementById('photo-bank');
+        pBank.innerHTML = '';
+        let years = [];
+        for(let i=0; i<9; i++) years.push(startYear + i);
+        
+        // Shuffle years
+        years.sort(() => Math.random() - 0.5);
+
+        years.forEach(year => {
+            const img = document.createElement('img');
+            img.src = `${year}.png`; // Assumes images are named 2017.png, 2018.png etc
+            img.className = 'draggable-photo';
+            img.draggable = true;
+            img.dataset.year = year;
+            img.id = `photo-${year}`;
+            
+            img.ondragstart = (e) => {
+                e.dataTransfer.setData("text/plain", year);
+            };
+            
+            pBank.appendChild(img);
         });
+    }
 
-        const slots = document.getElementById('answer-slots-5');
-        slots.innerHTML = '';
-        for(let i=0; i<target.length; i++) {
-            const s = document.createElement('div');
-            s.className = 'answer-slot';
-            slots.appendChild(s);
+    function dropPhoto(e, slotYear) {
+        e.preventDefault();
+        const draggedYear = parseInt(e.dataTransfer.getData("text/plain"));
+        
+        if (draggedYear === slotYear) {
+            // Correct!
+            const img = document.getElementById(`photo-${draggedYear}`);
+            const slot = e.target.closest('.year-slot');
+            
+            if (slot.querySelector('img')) return; // Already filled
+
+            // Move image visually
+            img.classList.add('placed');
+            img.draggable = false;
+            slot.appendChild(img);
+            slot.classList.add('correct');
+            
+            correctPlacements++;
+            revealRandomLetter();
+
+            if (correctPlacements === 9) {
+                setTimeout(() => {
+                    document.getElementById('valentine-final-input').style.display = 'block';
+                }, 500);
+            }
+        } else {
+            // Wrong
+            const slot = e.target.closest('.year-slot');
+            slot.style.animation = 'shake 0.4s ease';
+            setTimeout(() => slot.style.animation = '', 400);
         }
     }
 
-    function selectScramble5(tile, l) {
-        if (tile.classList.contains('selected')) return;
-        tile.classList.add('selected');
-        scrambleAnswer5.push(l);
+    function revealRandomLetter() {
+        // Find all indices that haven't been revealed yet
+        const available = [];
+        revealedIndices.forEach((isRev, idx) => {
+            if (!isRev) available.push(idx);
+        });
 
-        const slots = document.querySelectorAll('#answer-slots-5 .answer-slot');
-        const idx = scrambleAnswer5.length - 1;
-        if(slots[idx]) {
-            slots[idx].textContent = l;
-            slots[idx].classList.add('filled');
+        if (available.length > 0) {
+            // Pick random index
+            const randIndex = available[Math.floor(Math.random() * available.length)];
+            revealedIndices[randIndex] = true;
+
+            // Show letter
+            const lDiv = document.getElementById(`v-letter-${randIndex}`);
+            lDiv.textContent = TARGET_WORD[randIndex];
+            lDiv.classList.add('revealed');
         }
+    }
 
-        if(scrambleAnswer5.length === 9) {
-            if(scrambleAnswer5.join('') === 'VALENTINE') {
-                levelComplete('valentine');
-            } else {
-                slots.forEach(s => {
-                    s.style.animation = 'shake 0.4s ease';
-                    setTimeout(() => s.style.animation = '', 400);
-                });
-                setTimeout(() => {
-                    scrambleAnswer5 = [];
-                    document.querySelectorAll('#scramble-letters-5 .scramble-tile').forEach(t => t.classList.remove('selected'));
-                    slots.forEach(s => { s.textContent = ''; s.classList.remove('filled'); });
-                }, 600);
-            }
+    function checkLevel5Input() {
+        const val = document.getElementById('final-word-input').value.trim().toUpperCase();
+        if (val === 'VALENTINE' || val === 'VALENTINES') {
+            levelComplete('valentine');
+        } else {
+            const btn = document.querySelector('#valentine-final-input button');
+            btn.style.animation = 'shake 0.4s ease';
+            setTimeout(() => btn.style.animation = '', 400);
         }
     }
 
