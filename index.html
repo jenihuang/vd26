@@ -118,13 +118,6 @@
             line-height: 1.5;
         }
 
-        .word-reveal {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
         .revealed-words {
             display: flex;
             gap: 10px;
@@ -172,13 +165,6 @@
             box-shadow: 0 6px 25px rgba(238, 90, 111, 0.5);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
         .btn-small {
             padding: 10px 28px;
             font-size: 0.85rem;
@@ -187,10 +173,8 @@
         /* ── Progress Bar ── */
         .progress-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
+            top: 0; left: 0;
+            width: 100%; height: 5px;
             background: rgba(255, 255, 255, 0.3);
             z-index: 100;
         }
@@ -202,29 +186,27 @@
             border-radius: 0 3px 3px 0;
         }
 
-        /* ══════════════════════════════════
-           LEVEL 1 — Word Scramble ("Will")
-           ══════════════════════════════════ */
+        /* ── Scramble Tiles (Used in Level 5) ── */
         .scramble-letters {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
         .scramble-tile {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #d63384;
             background: white;
             border: 2px solid #f0d0e0;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
             user-select: none;
@@ -241,27 +223,29 @@
             color: white;
             border-color: #d63384;
             transform: scale(0.95);
+            opacity: 0.5;
         }
 
         .answer-slots {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
+            flex-wrap: wrap;
             margin-bottom: 25px;
         }
 
         .answer-slot {
-            width: 55px;
-            height: 55px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #d63384;
             background: rgba(255, 255, 255, 0.6);
             border: 2px dashed #f0d0e0;
-            border-radius: 12px;
+            border-radius: 10px;
             transition: all 0.3s ease;
         }
 
@@ -271,9 +255,7 @@
             background: white;
         }
 
-        /* ══════════════════════════════════
-           LEVEL 2 — Emoji Rebus ("U")
-           ══════════════════════════════════ */
+        /* ── Rebus (Level 2) ── */
         .rebus-container {
             display: flex;
             align-items: center;
@@ -282,25 +264,9 @@
             margin-bottom: 25px;
             flex-wrap: wrap;
         }
-
-        .rebus-emoji {
-            font-size: 3rem;
-            animation: pulse 2s ease infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .rebus-options {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
+        .rebus-emoji { font-size: 3rem; animation: pulse 2s ease infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .rebus-options { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
         .rebus-option {
             padding: 12px 30px;
             background: white;
@@ -312,513 +278,138 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
+        .rebus-option:hover { border-color: #d63384; color: #d63384; }
+        .rebus-option.correct { background: #d63384; color: white; border-color: #d63384; }
+        .rebus-option.wrong { background: #ffebee; border-color: #ef5350; color: #ef5350; animation: shake 0.4s ease; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 
-        .rebus-option:hover {
-            border-color: #d63384;
-            color: #d63384;
-        }
-
-        .rebus-option.correct {
-            background: #d63384;
-            color: white;
-            border-color: #d63384;
-        }
-
-        .rebus-option.wrong {
-            background: #ffebee;
-            border-color: #ef5350;
-            color: #ef5350;
-            animation: shake 0.4s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        /* ══════════════════════════════════
-           LEVEL 3 — Honeycomb Puzzle ("bee")
-           ══════════════════════════════════ */
-        .honeycomb {
-            display: grid;
-            grid-template-columns: repeat(5, 55px);
-            gap: 6px;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-
+        /* ── Honeycomb (Level 3) ── */
+        .honeycomb { display: grid; grid-template-columns: repeat(5, 55px); gap: 6px; justify-content: center; margin-bottom: 25px; }
         .hex-cell {
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
+            width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: 600; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; user-select: none;
         }
-
-        .hex-cell.letter {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
-        }
-
-        .hex-cell.letter:hover {
-            background: #ffc107;
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .hex-cell.letter.path-selected {
-            background: #ffc107;
-            color: white;
-            border-color: #e0a800;
-            box-shadow: 0 0 12px rgba(255, 193, 7, 0.5);
-        }
-
-        .hex-cell.empty {
-            background: transparent;
-            border: none;
-            cursor: default;
-        }
-
-        .bee-emoji {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            animation: buzz 0.5s ease infinite alternate;
-        }
-
-        @keyframes buzz {
-            from { transform: translateX(-2px) rotate(-3deg); }
-            to { transform: translateX(2px) rotate(3deg); }
-        }
-
+        .hex-cell.letter { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
+        .hex-cell.letter:hover { background: #ffc107; color: white; transform: scale(1.05); }
+        .hex-cell.letter.path-selected { background: #ffc107; color: white; border-color: #e0a800; box-shadow: 0 0 12px rgba(255, 193, 7, 0.5); }
+        .bee-emoji { font-size: 2.5rem; margin-bottom: 10px; animation: buzz 0.5s ease infinite alternate; }
+        @keyframes buzz { from { transform: translateX(-2px) rotate(-3deg); } to { transform: translateX(2px) rotate(3deg); } }
         .path-display {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #856404;
-            background: #fff3cd;
-            padding: 8px 25px;
-            border-radius: 30px;
-            margin-bottom: 15px;
-            min-width: 120px;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: 4px;
+            font-size: 1.3rem; font-weight: 600; color: #856404; background: #fff3cd;
+            padding: 8px 25px; border-radius: 30px; margin-bottom: 15px; min-width: 120px; min-height: 40px;
+            display: flex; align-items: center; justify-content: center; letter-spacing: 4px;
         }
 
-        /* ══════════════════════════════════
-           LEVEL 4 — Love Quote Fill ("my")
-           ══════════════════════════════════ */
-        .quote-container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            max-width: 450px;
-        }
-
-        .quote-text {
-            font-size: 1.2rem;
-            color: #555;
-            line-height: 2;
-            font-style: italic;
-        }
-
-        .quote-blank {
-            display: inline-block;
-            min-width: 30px;
-            border-bottom: 2px dashed #d63384;
-            color: #d63384;
-            font-weight: 600;
-            font-style: normal;
-            padding: 0 4px;
-            margin: 0 3px;
-        }
-
-        .letter-choices {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
+        /* ── Level 4 ("my") ── */
+        .quote-container { background: white; border-radius: 20px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); max-width: 450px; }
+        .quote-text { font-size: 1.2rem; color: #555; line-height: 2; font-style: italic; }
+        .quote-blank { display: inline-block; min-width: 30px; border-bottom: 2px dashed #d63384; color: #d63384; font-weight: 600; padding: 0 4px; margin: 0 3px; }
+        .letter-choices { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
         .letter-choice {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            background: white;
-            border: 2px solid #f0d0e0;
-            border-radius: 10px;
-            cursor: pointer;
-            color: #d63384;
-            transition: all 0.2s ease;
+            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: 600; background: white; border: 2px solid #f0d0e0; border-radius: 10px;
+            cursor: pointer; color: #d63384; transition: all 0.2s ease;
         }
+        .letter-choice:hover { border-color: #d63384; transform: scale(1.08); }
 
-        .letter-choice:hover {
-            border-color: #d63384;
-            transform: scale(1.08);
-        }
-
-        .letter-choice.used {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* ══════════════════════════════════
-           LEVEL 5 — Crossword ("valentine")
-           ══════════════════════════════════ */
-        .crossword-clues {
-            text-align: left;
-            margin-bottom: 20px;
-            max-width: 400px;
-        }
-
+        /* ── Crossword (Used in Level 1) ── */
+        .crossword-clues { text-align: left; margin-bottom: 20px; max-width: 400px; width: 100%; }
         .clue-item {
-            color: #666;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            padding: 8px 14px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            color: #666; font-size: 0.85rem; margin-bottom: 8px; padding: 8px 14px;
+            background: white; border-radius: 10px; display: flex; gap: 10px; align-items: center;
             box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
-
         .clue-number {
-            background: #d63384;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 600;
-            flex-shrink: 0;
+            background: #d63384; color: white; width: 24px; height: 24px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; flex-shrink: 0;
         }
-
-        .crossword-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .crossword-row {
-            display: flex;
-            gap: 4px;
-        }
-
+        .crossword-grid { display: flex; flex-direction: column; gap: 4px; align-items: center; margin-bottom: 25px; }
+        .crossword-row { display: flex; gap: 4px; }
         .crossword-cell {
-            width: 38px;
-            height: 38px;
-            text-align: center;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            border: 2px solid #f0d0e0;
-            border-radius: 6px;
-            outline: none;
-            color: #d63384;
-            background: white;
-            transition: all 0.2s ease;
-            font-family: 'Poppins', sans-serif;
+            width: 38px; height: 38px; text-align: center; font-size: 1rem; font-weight: 600; text-transform: uppercase;
+            border: 2px solid #f0d0e0; border-radius: 6px; outline: none; color: #d63384; background: white;
+            transition: all 0.2s ease; font-family: 'Poppins', sans-serif;
         }
-
-        .crossword-cell:focus {
-            border-color: #d63384;
-            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.15);
-        }
-
-        .crossword-cell.correct {
-            background: #d4edda;
-            border-color: #28a745;
-            color: #28a745;
-        }
-
-        .crossword-cell.highlighted {
+        .crossword-cell:focus { border-color: #d63384; box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.15); }
+        .crossword-cell.correct { background: #d4edda; border-color: #28a745; color: #28a745; }
+        
+        /* Highlight specific cells that extract to "WILL" */
+        .crossword-cell.extraction-cell {
             border-color: #d63384;
             background: #fff0f5;
         }
-
-        .crossword-cell-number {
-            position: relative;
-        }
-
-        .crossword-cell-number::before {
-            position: absolute;
-            top: 1px;
-            left: 3px;
-            font-size: 0.5rem;
-            color: #999;
-        }
-
-        /* ══════════════════════════════════
-           FINAL REVEAL SCREEN
-           ══════════════════════════════════ */
-        .final-message {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.8rem;
-            color: #d63384;
-            margin-bottom: 10px;
-            line-height: 1.3;
-            text-shadow: 2px 2px 8px rgba(214, 51, 132, 0.15);
-        }
-
-        .final-bee {
-            font-size: 3rem;
-            margin: 10px 0;
-            animation: buzz 0.5s ease infinite alternate;
-        }
-
-        .yes-no-container {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: center;
-            margin-top: 25px;
-            min-height: 80px;
-            position: relative;
-        }
-
-        .btn-yes {
-            background: linear-gradient(135deg, #ff6b9d, #ee5a6f);
+        .crossword-cell.extraction-cell.correct {
+            background: #ff6b9d; /* Pink fill when correct */
             color: white;
-            font-size: 1.4rem;
-            padding: 16px 50px;
-            box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4);
-            animation: pulseYes 1.5s ease infinite;
+            border-color: #ff6b9d;
         }
 
-        .btn-yes:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(238, 90, 111, 0.6);
+        /* ── Final & Reveal Screens ── */
+        .final-message { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #d63384; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(214, 51, 132, 0.15); }
+        .final-bee { font-size: 3rem; margin: 10px 0; animation: buzz 0.5s ease infinite alternate; }
+        .yes-no-container { display: flex; gap: 30px; justify-content: center; align-items: center; margin-top: 25px; min-height: 80px; position: relative; }
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b9d, #ee5a6f); color: white; font-size: 1.4rem;
+            padding: 16px 50px; box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4); animation: pulseYes 1.5s ease infinite;
         }
-
-        @keyframes pulseYes {
-            0%, 100% { box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4); }
-            50% { box-shadow: 0 4px 30px rgba(238, 90, 111, 0.7); }
-        }
-
+        .btn-yes:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(238, 90, 111, 0.6); }
+        @keyframes pulseYes { 0%, 100% { box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4); } 50% { box-shadow: 0 4px 30px rgba(238, 90, 111, 0.7); } }
         .btn-no {
-            background: #f0f0f0;
-            color: #999;
-            font-size: 0.9rem;
-            padding: 12px 30px;
-            transition: all 0.15s ease;
-            position: absolute;
+            background: #f0f0f0; color: #999; font-size: 0.9rem; padding: 12px 30px; transition: all 0.15s ease; position: absolute;
         }
-
-        .btn-no:hover {
-            background: #f0f0f0;
-            color: #999;
-        }
-
-        .reveal-header {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.8rem;
-            color: #d63384;
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 8px rgba(214, 51, 132, 0.15);
-            animation: fadeIn 0.8s ease;
-        }
-
+        .reveal-header { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #d63384; margin-bottom: 5px; animation: fadeIn 0.8s ease; }
         .poem-container {
-            background: white;
-            border-radius: 20px;
-            padding: 35px;
-            max-width: 500px;
-            margin: 20px auto;
-            box-shadow: 0 8px 30px rgba(214, 51, 132, 0.12);
-            border: 2px solid rgba(214, 51, 132, 0.1);
+            background: white; border-radius: 20px; padding: 35px; max-width: 500px; margin: 20px auto;
+            box-shadow: 0 8px 30px rgba(214, 51, 132, 0.12); border: 2px solid rgba(214, 51, 132, 0.1);
         }
-
-        .poem-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: #d63384;
-            margin-bottom: 15px;
-        }
-
-        .poem-text {
-            color: #666;
-            font-size: 1rem;
-            line-height: 1.9;
-            font-style: italic;
-            white-space: pre-line;
-        }
+        .poem-title { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #d63384; margin-bottom: 15px; }
+        .poem-text { color: #666; font-size: 1rem; line-height: 1.9; font-style: italic; white-space: pre-line; }
 
         /* ── Celebration Hearts ── */
-        .celebration-hearts {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .celebration-heart {
-            position: absolute;
-            font-size: 2rem;
-            animation: celebrateFloat 4s ease-out forwards;
-        }
-
-        @keyframes celebrateFloat {
-            0% { opacity: 1; transform: translateY(0) scale(0); }
-            20% { transform: translateY(-50px) scale(1.2); }
-            100% { opacity: 0; transform: translateY(-400px) scale(0.5) rotate(45deg); }
-        }
-
-        /* ── Success flash ── */
+        .celebration-hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+        .celebration-heart { position: absolute; font-size: 2rem; animation: celebrateFloat 4s ease-out forwards; }
+        @keyframes celebrateFloat { 0% { opacity: 1; transform: translateY(0) scale(0); } 20% { transform: translateY(-50px) scale(1.2); } 100% { opacity: 0; transform: translateY(-400px) scale(0.5) rotate(45deg); } }
         .success-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(214, 51, 132, 0.1);
-            z-index: 50;
-            animation: flashOverlay 0.6s ease forwards;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(214, 51, 132, 0.1);
+            z-index: 50; animation: flashOverlay 0.6s ease forwards; pointer-events: none;
         }
-
-        @keyframes flashOverlay {
-            0% { opacity: 0; }
-            30% { opacity: 1; }
-            100% { opacity: 0; }
-        }
+        @keyframes flashOverlay { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
 
         /* ── Hint button ── */
-        .hint-btn {
-            background: none;
-            border: none;
-            color: #ccc;
-            font-size: 0.8rem;
-            cursor: pointer;
-            margin-top: 10px;
-            font-family: 'Poppins', sans-serif;
-            transition: color 0.2s;
-        }
+        .hint-btn { background: none; border: none; color: #ccc; font-size: 0.8rem; cursor: pointer; margin-top: 10px; font-family: 'Poppins', sans-serif; transition: color 0.2s; }
+        .hint-btn:hover { color: #d63384; }
+        .hint-text { color: #d63384; font-size: 0.85rem; margin-top: 8px; font-style: italic; animation: fadeIn 0.4s ease; }
 
-        .hint-btn:hover {
-            color: #d63384;
-        }
-
-        .hint-text {
-            color: #d63384;
-            font-size: 0.85rem;
-            margin-top: 8px;
-            font-style: italic;
-            animation: fadeIn 0.4s ease;
-        }
-
-        /* ══════════════════════════════════
-           PHOTO TIMELINE
-           ══════════════════════════════════ */
-        .photo-timeline {
-            max-width: 500px;
-            margin: 25px auto;
-            width: 100%;
-        }
-
-        .photo-timeline-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: #d63384;
-            margin-bottom: 20px;
-        }
-
-        .timeline-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
+        /* ── Photo Timeline ── */
+        .photo-timeline { max-width: 500px; margin: 25px auto; width: 100%; }
+        .photo-timeline-title { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #d63384; margin-bottom: 20px; }
+        .timeline-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
         .timeline-item {
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(214, 51, 132, 0.15);
-            border: 3px solid rgba(214, 51, 132, 0.12);
-            background: white;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: timelineReveal 0.6s ease forwards;
+            position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(214, 51, 132, 0.15);
+            border: 3px solid rgba(214, 51, 132, 0.12); background: white; transition: transform 0.3s ease;
+            opacity: 0; transform: translateY(20px); animation: timelineReveal 0.6s ease forwards;
         }
-
-        .timeline-item:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(214, 51, 132, 0.25);
-        }
-
-        @keyframes timelineReveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .timeline-item img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            display: block;
-        }
-
+        .timeline-item:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 30px rgba(214, 51, 132, 0.25); }
+        @keyframes timelineReveal { to { opacity: 1; transform: translateY(0); } }
+        .timeline-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
         .timeline-year {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
-            color: white;
-            padding: 20px 10px 8px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
-        }
-
-        .timeline-year span {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 300;
-            display: block;
-            opacity: 0.85;
-            margin-top: 1px;
+            position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+            color: white; padding: 20px 10px 8px; font-family: 'Dancing Script', cursive; font-size: 1.3rem; font-weight: 700;
         }
 
         /* ── Responsive ── */
         @media (max-width: 480px) {
             #welcome-screen .title { font-size: 2.2rem; }
             .puzzle-title { font-size: 1.6rem; }
-            .scramble-tile { width: 50px; height: 50px; font-size: 1.3rem; }
-            .answer-slot { width: 45px; height: 45px; font-size: 1.2rem; }
-            .rebus-emoji { font-size: 2.5rem; }
+            .scramble-tile { width: 35px; height: 35px; font-size: 1rem; }
+            .answer-slot { width: 30px; height: 30px; font-size: 0.9rem; }
             .honeycomb { grid-template-columns: repeat(5, 45px); }
             .hex-cell { width: 45px; height: 45px; font-size: 1rem; }
             .crossword-cell { width: 32px; height: 32px; font-size: 0.85rem; }
             .final-message { font-size: 2rem; }
-            .timeline-grid { gap: 10px; }
-            .timeline-year { font-size: 1.1rem; }
         }
 
-        /* ── Background themes per level ── */
+        /* ── Background themes ── */
         .bg-welcome { background: linear-gradient(135deg, #fce4ec, #f8bbd0, #fce4ec); }
         .bg-level1 { background: linear-gradient(135deg, #fce4ec, #f3e5f5); }
         .bg-level2 { background: linear-gradient(135deg, #f3e5f5, #e8eaf6); }
@@ -830,17 +421,9 @@
 </head>
 <body class="bg-welcome">
 
-    <!-- Floating hearts background -->
     <div class="hearts-bg" id="hearts-bg"></div>
+    <div class="progress-container"><div class="progress-bar" id="progress-bar" style="width: 0%"></div></div>
 
-    <!-- Progress bar -->
-    <div class="progress-container">
-        <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
-    </div>
-
-    <!-- ═══════════════════════════════════
-         WELCOME SCREEN
-         ═══════════════════════════════════ -->
     <div class="screen active" id="welcome-screen">
         <div style="font-size: 4rem; margin-bottom: 15px;">💌</div>
         <div class="title">Steven, I have a message for you</div>
@@ -848,138 +431,98 @@
         <button class="btn btn-primary" onclick="startGame()">Open</button>
     </div>
 
-    <!-- ═══════════════════════════════════
-         LEVEL 1 — Word Scramble ("Will")
-         ═══════════════════════════════════ -->
     <div class="screen" id="level1-screen">
         <div class="level-badge">Puzzle 1 of 5</div>
-        <div class="puzzle-title">Unscramble the Letters</div>
-        <div class="puzzle-instruction">Tap the letters in the right order to spell a word</div>
+        <div class="puzzle-title">The First Word</div>
+        <div class="puzzle-instruction">Fill in the crossword. The highlighted letters reveal the answer!</div>
 
         <div class="revealed-words" id="words-display-1"></div>
 
-        <div class="scramble-letters" id="scramble-letters"></div>
-        <div class="answer-slots" id="answer-slots-1"></div>
+        <div class="crossword-clues" id="crossword-clues-1"></div>
+        <div class="crossword-grid" id="crossword-grid-1"></div>
 
         <button class="hint-btn" onclick="showHint(1)">Need a hint?</button>
-        <div id="hint-1" style="display:none" class="hint-text">Think about determination and desire...</div>
+        <div id="hint-1" style="display:none" class="hint-text">The highlighted cells spell out the first word of the question.</div>
     </div>
 
-    <!-- ═══════════════════════════════════
-         LEVEL 2 — Emoji Rebus ("U")
-         ═══════════════════════════════════ -->
     <div class="screen" id="level2-screen">
         <div class="level-badge">Puzzle 2 of 5</div>
         <div class="puzzle-title">Emoji Riddle</div>
         <div class="puzzle-instruction">What single letter does this emoji represent?</div>
-
         <div class="revealed-words" id="words-display-2"></div>
-
         <div class="rebus-container">
             <span class="rebus-emoji">👉</span>
             <span class="rebus-emoji">🫵</span>
             <span class="rebus-emoji">👈</span>
         </div>
-
-        <div class="rebus-options" id="rebus-options">
+        <div class="rebus-options">
             <div class="rebus-option" onclick="checkRebus('I')">I</div>
             <div class="rebus-option" onclick="checkRebus('U')">U</div>
             <div class="rebus-option" onclick="checkRebus('W')">W</div>
             <div class="rebus-option" onclick="checkRebus('Y')">Y</div>
         </div>
-
         <button class="hint-btn" onclick="showHint(2)">Need a hint?</button>
         <div id="hint-2" style="display:none" class="hint-text">The fingers are pointing at...</div>
     </div>
 
-    <!-- ═══════════════════════════════════
-         LEVEL 3 — Honeycomb Path ("bee")
-         ═══════════════════════════════════ -->
     <div class="screen" id="level3-screen">
         <div class="level-badge">Puzzle 3 of 5</div>
         <div class="bee-emoji">🐝</div>
         <div class="puzzle-title">Honeycomb Path</div>
         <div class="puzzle-instruction">Tap letters on the honeycomb to spell a 3-letter clue</div>
-
         <div class="revealed-words" id="words-display-3"></div>
-
         <div class="path-display" id="path-display"></div>
-
         <div class="honeycomb" id="honeycomb-grid"></div>
-
         <div style="display: flex; gap: 10px; justify-content: center;">
             <button class="btn btn-primary btn-small" onclick="clearPath()">Clear</button>
         </div>
-
         <button class="hint-btn" onclick="showHint(3)">Need a hint?</button>
         <div id="hint-3" style="display:none" class="hint-text">This little insect makes honey! 🍯</div>
     </div>
 
-    <!-- ═══════════════════════════════════
-         LEVEL 4 — Love Quote Fill ("my")
-         ═══════════════════════════════════ -->
     <div class="screen" id="level4-screen">
         <div class="level-badge">Puzzle 4 of 5</div>
         <div class="puzzle-title">Complete the Quote</div>
         <div class="puzzle-instruction">Fill in the missing letters to reveal a word</div>
-
         <div class="revealed-words" id="words-display-4"></div>
-
         <div class="quote-container">
             <div class="quote-text">
                 "You are <span class="quote-blank" id="blank-0">_</span><span class="quote-blank" id="blank-1">_</span> sunshine, <span class="quote-blank" id="blank-2">_</span><span class="quote-blank" id="blank-3">_</span> moonlight, <span class="quote-blank" id="blank-4">_</span><span class="quote-blank" id="blank-5">_</span> everything."
             </div>
         </div>
-
         <div class="letter-choices" id="letter-choices-4"></div>
-
         <button class="hint-btn" onclick="showHint(4)">Need a hint?</button>
         <div id="hint-4" style="display:none" class="hint-text">All blanks share the same two letters... something possessive</div>
     </div>
 
-    <!-- ═══════════════════════════════════
-         LEVEL 5 — Crossword ("valentine")
-         ═══════════════════════════════════ -->
     <div class="screen" id="level5-screen">
         <div class="level-badge">Puzzle 5 of 5</div>
-        <div class="puzzle-title">Final Crossword</div>
-        <div class="puzzle-instruction">Answer each clue — the highlighted column reveals the final word!</div>
-
+        <div class="puzzle-title">The Final Word</div>
+        <div class="puzzle-instruction">Unscramble the letters to reveal the most important word!</div>
         <div class="revealed-words" id="words-display-5"></div>
-
-        <div class="crossword-clues" id="crossword-clues"></div>
-        <div class="crossword-grid" id="crossword-grid"></div>
+        
+        <div class="scramble-letters" id="scramble-letters-5"></div>
+        <div class="answer-slots" id="answer-slots-5"></div>
 
         <button class="hint-btn" onclick="showHint(5)">Need a hint?</button>
-        <div id="hint-5" style="display:none" class="hint-text">The highlighted column spells out a word for someone you love on Feb 14th!</div>
+        <div id="hint-5" style="display:none" class="hint-text">It's a special day in February...</div>
     </div>
 
-    <!-- ═══════════════════════════════════
-         FINAL QUESTION — Yes / No
-         ═══════════════════════════════════ -->
     <div class="screen" id="final-screen">
         <div class="final-message" id="final-message-text"></div>
         <div class="final-bee">🐝</div>
-
         <div class="yes-no-container" id="yes-no-buttons" style="display: none;">
             <button class="btn btn-yes" onclick="sayYes()">Yes!</button>
-            <button class="btn btn-no" id="no-btn"
-                onmouseover="runAway(this)"
-                ontouchstart="runAway(this)">No</button>
+            <button class="btn btn-no" id="no-btn" onmouseover="runAway(this)" ontouchstart="runAway(this)">No</button>
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════
-         REVEAL — Poem + Photos
-         ═══════════════════════════════════ -->
     <div class="screen" id="reveal-screen">
         <div class="reveal-header">Together forever!</div>
         <div style="font-size: 3rem; margin: 10px 0;">🐝💕</div>
-
         <div class="poem-container">
             <div class="poem-title">For my wheetay</div>
             <div class="poem-text" id="poem-text">
-<!-- ✏️ REPLACE THIS PLACEHOLDER WITH YOUR POEM ✏️ -->
 Through every season, hand in hand,
 Together we have built something grand.
 In your heart I've found my home,
@@ -991,75 +534,27 @@ My heart is yours, forevermore,
 You're the one that I adore.
 
 Happy Valentine's Day 2026
-<!-- ✏️ END OF POEM — Replace above lines ✏️ -->
             </div>
         </div>
-
         <div class="photo-timeline">
             <div class="photo-timeline-title">Our Valentine's Day Memories</div>
             <div class="timeline-grid">
                 <div class="timeline-item" style="animation-delay: 0s;">
-                    <img src="2016.png" alt="Valentine's Day 2016">
+                    <img src="https://via.placeholder.com/300?text=2016" alt="2016">
                     <div class="timeline-year">2016 <span>Valentine's Day</span></div>
                 </div>
-                <div class="timeline-item" style="animation-delay: 0.15s;">
-                    <img src="2017.png" alt="Valentine's Day 2017">
-                    <div class="timeline-year">2017 <span>Valentine's Day</span></div>
                 </div>
-                <div class="timeline-item" style="animation-delay: 0.3s;">
-                    <img src="2018.png" alt="Valentine's Day 2018">
-                    <div class="timeline-year">2018 <span>Valentine's Day</span></div>
-                </div>
-                <div class="timeline-item" style="animation-delay: 0.45s;">
-                    <img src="2019.png" alt="Valentine's Day 2019">
-                    <div class="timeline-year">2019 <span>Valentine's Day</span></div>
-                </div>
-                <div class="timeline-item" style="animation-delay: 0.6s;">
-                    <img src="2020.png" alt="Valentine's Day 2020">
-                    <div class="timeline-year">2020 <span>Valentine's Day</span></div>
-                </div>
-                <div class="timeline-item" style="animation-delay: 0.75s;">
-                    <img src="2021.png" alt="Valentine's Day 2021">
-                    <div class="timeline-year">2021 <span>Valentine's Day</span></div>
-                </div>
-                <div class="timeline-item" style="animation-delay: 0.9s;">
-                    <img src="2022.png" alt="Valentine's Day 2022">
-                    <div class="timeline-year">2022 <span>Valentine's Day</span></div>
-                </div>
-                <div class="timeline-item" style="animation-delay: 1.05s;">
-                    <img src="2023.png" alt="Valentine's Day 2023">
-                    <div class="timeline-year">2023 <span>Valentine's Day</span></div>
-                </div>
-                <div class="timeline-item" style="animation-delay: 1.2s;">
-                    <img src="2024.png" alt="Valentine's Day 2024">
-                    <div class="timeline-year">2024 <span>Valentine's Day</span></div>
-                </div>
-                <div class="timeline-item" style="animation-delay: 1.35s;">
-                    <img src="2025.png" alt="Valentine's Day 2025">
-                    <div class="timeline-year">2025 <span>Valentine's Day</span></div>
-                </div>
-            </div>
         </div>
-
         <div style="margin-top: 20px; font-size: 2rem;">💕</div>
     </div>
 
-    <!-- ═══════════════════════════════════
-         CELEBRATION HEARTS CONTAINER
-         ═══════════════════════════════════ -->
-    <div class="celebration-hearts" id="celebration-hearts"></div>
-
     <script>
-    /* ──────────────────────────────────
-       GAME STATE
-       ────────────────────────────────── */
+    /* ── GAME STATE ── */
     const WORDS = ['Will', 'U', 'bee', 'my', 'valentine'];
     const solvedWords = [];
     let currentLevel = 0;
 
-    /* ──────────────────────────────────
-       FLOATING HEARTS BACKGROUND
-       ────────────────────────────────── */
+    /* ── BACKGROUND ── */
     function createFloatingHearts() {
         const container = document.getElementById('hearts-bg');
         const hearts = ['💕', '💗', '💖', '💘', '💝', '❤️', '🩷'];
@@ -1076,15 +571,12 @@ Happy Valentine's Day 2026
     }
     createFloatingHearts();
 
-    /* ──────────────────────────────────
-       UTILITIES
-       ────────────────────────────────── */
+    /* ── UTILITIES ── */
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const screen = document.getElementById(id);
         screen.classList.remove('active');
-        // force reflow for animation
-        void screen.offsetWidth;
+        void screen.offsetWidth; // Reflow
         screen.classList.add('active');
     }
 
@@ -1105,19 +597,21 @@ Happy Valentine's Day 2026
         });
     }
 
-    function setBackground(cls) {
-        document.body.className = cls;
-    }
+    function setBackground(cls) { document.body.className = cls; }
 
     function celebrate() {
-        // Flash overlay
         const overlay = document.createElement('div');
         overlay.className = 'success-overlay';
         document.body.appendChild(overlay);
         setTimeout(() => overlay.remove(), 700);
 
-        // Burst of hearts
         const container = document.getElementById('celebration-hearts');
+        if(!container) {
+             const newCont = document.createElement('div');
+             newCont.id = 'celebration-hearts';
+             newCont.className = 'celebration-hearts';
+             document.body.appendChild(newCont);
+        }
         const emojis = ['💖', '💗', '💕', '✨', '🩷', '💘'];
         for (let i = 0; i < 15; i++) {
             const heart = document.createElement('div');
@@ -1126,7 +620,7 @@ Happy Valentine's Day 2026
             heart.style.left = (20 + Math.random() * 60) + '%';
             heart.style.top = (40 + Math.random() * 30) + '%';
             heart.style.animationDelay = (Math.random() * 0.5) + 's';
-            container.appendChild(heart);
+            document.getElementById('celebration-hearts').appendChild(heart);
             setTimeout(() => heart.remove(), 4500);
         }
     }
@@ -1135,7 +629,6 @@ Happy Valentine's Day 2026
         solvedWords.push(word);
         updateProgress();
         celebrate();
-
         setTimeout(() => {
             currentLevel++;
             if (currentLevel >= WORDS.length) {
@@ -1166,92 +659,95 @@ Happy Valentine's Day 2026
         }
     }
 
-    /* ══════════════════════════════════
-       LEVEL 1 — Word Scramble ("Will")
-       ══════════════════════════════════ */
-    let scrambleAnswer = [];
+    /* ════════ LEVEL 1: WILL (CROSSWORD) ════════ */
+    // 1. SQUAW (W is idx 4)
+    // 2. MILO (I is idx 1)
+    // 3. WILBUR (L is idx 2)
+    // 4. NARWHAL (L is idx 6)
+    const level1Data = [
+        { clue: "Which resort did we first meet?", answer: "SQUAW", targetIdx: 4 },
+        { clue: "Who is the bud?", answer: "MILO", targetIdx: 1 },
+        { clue: "Babbaz birth name", answer: "WILBUR", targetIdx: 2 },
+        { clue: "Our favorite nautical friend", answer: "NARWHAL", targetIdx: 6 }
+    ];
 
     function initLevel1() {
         showScreen('level1-screen');
         updateWordsDisplay(1);
 
-        const word = 'WILL';
-        const letters = word.split('').sort(() => Math.random() - 0.5);
-        // make sure it's actually scrambled
-        if (letters.join('') === word) {
-            const tmp = letters[0]; letters[0] = letters[2]; letters[2] = tmp;
-        }
-
-        scrambleAnswer = [];
-
-        const container = document.getElementById('scramble-letters');
-        container.innerHTML = '';
-        letters.forEach((letter, i) => {
-            const tile = document.createElement('div');
-            tile.className = 'scramble-tile';
-            tile.textContent = letter;
-            tile.dataset.index = i;
-            tile.onclick = () => selectScrambleLetter(tile, letter);
-            container.appendChild(tile);
+        const cluesContainer = document.getElementById('crossword-clues-1');
+        cluesContainer.innerHTML = '';
+        
+        level1Data.forEach((item, i) => {
+            const div = document.createElement('div');
+            div.className = 'clue-item';
+            div.innerHTML = `<span class="clue-number">${i + 1}</span> ${item.clue}`;
+            cluesContainer.appendChild(div);
         });
 
-        const slots = document.getElementById('answer-slots-1');
-        slots.innerHTML = '';
-        for (let i = 0; i < word.length; i++) {
-            const slot = document.createElement('div');
-            slot.className = 'answer-slot';
-            slots.appendChild(slot);
-        }
-    }
+        const grid = document.getElementById('crossword-grid-1');
+        grid.innerHTML = '';
 
-    function selectScrambleLetter(tile, letter) {
-        if (tile.classList.contains('selected')) return;
-        tile.classList.add('selected');
-        scrambleAnswer.push(letter);
+        level1Data.forEach((item, rowIdx) => {
+            const row = document.createElement('div');
+            row.className = 'crossword-row';
+            
+            for (let i = 0; i < item.answer.length; i++) {
+                const input = document.createElement('input');
+                input.className = 'crossword-cell';
+                if (i === item.targetIdx) input.classList.add('extraction-cell');
+                
+                input.maxLength = 1;
+                input.dataset.row = rowIdx;
+                input.dataset.col = i;
+                input.dataset.expected = item.answer[i];
 
-        const slots = document.querySelectorAll('#answer-slots-1 .answer-slot');
-        const idx = scrambleAnswer.length - 1;
-        if (slots[idx]) {
-            slots[idx].textContent = letter;
-            slots[idx].classList.add('filled');
-        }
-
-        if (scrambleAnswer.length === 4) {
-            const attempt = scrambleAnswer.join('');
-            if (attempt === 'WILL') {
-                levelComplete('Will');
-            } else {
-                // Wrong — shake and reset
-                slots.forEach(s => {
-                    s.style.animation = 'shake 0.4s ease';
-                    setTimeout(() => s.style.animation = '', 400);
+                input.addEventListener('input', (e) => {
+                    const val = e.target.value.toUpperCase();
+                    e.target.value = val;
+                    if (val === item.answer[i]) {
+                        e.target.classList.add('correct');
+                    } else {
+                        e.target.classList.remove('correct');
+                    }
+                    checkLevel1Complete();
+                    if (val.length === 1) {
+                        const next = e.target.nextElementSibling;
+                        if (next) next.focus();
+                    }
                 });
-                setTimeout(() => {
-                    scrambleAnswer = [];
-                    document.querySelectorAll('.scramble-tile').forEach(t => t.classList.remove('selected'));
-                    slots.forEach(s => { s.textContent = ''; s.classList.remove('filled'); });
-                }, 600);
+
+                input.addEventListener('keydown', (e) => {
+                     if (e.key === 'Backspace' && e.target.value === '') {
+                         const prev = e.target.previousElementSibling;
+                         if (prev) prev.focus();
+                     }
+                });
+
+                row.appendChild(input);
             }
+            grid.appendChild(row);
+        });
+    }
+
+    function checkLevel1Complete() {
+        const cells = document.querySelectorAll('#crossword-grid-1 .crossword-cell');
+        const allCorrect = Array.from(cells).every(c => c.classList.contains('correct'));
+        if (allCorrect) {
+            levelComplete('Will');
         }
     }
 
-    /* ══════════════════════════════════
-       LEVEL 2 — Emoji Rebus ("U")
-       ══════════════════════════════════ */
+    /* ════════ LEVEL 2: U (REBUS) ════════ */
     function initLevel2() {
         showScreen('level2-screen');
         updateWordsDisplay(2);
-        // Reset option styles
-        document.querySelectorAll('.rebus-option').forEach(o => {
-            o.className = 'rebus-option';
-        });
+        document.querySelectorAll('.rebus-option').forEach(o => o.className = 'rebus-option');
     }
-
-    function checkRebus(answer) {
-        const options = document.querySelectorAll('.rebus-option');
-        options.forEach(o => {
-            if (o.textContent === answer) {
-                if (answer === 'U') {
+    function checkRebus(ans) {
+        document.querySelectorAll('.rebus-option').forEach(o => {
+            if (o.textContent === ans) {
+                if (ans === 'U') {
                     o.classList.add('correct');
                     levelComplete('U');
                 } else {
@@ -1262,17 +758,13 @@ Happy Valentine's Day 2026
         });
     }
 
-    /* ══════════════════════════════════
-       LEVEL 3 — Honeycomb Path ("bee")
-       ══════════════════════════════════ */
+    /* ════════ LEVEL 3: BEE (HONEYCOMB) ════════ */
     let pathLetters = [];
-
     function initLevel3() {
         showScreen('level3-screen');
         updateWordsDisplay(3);
         pathLetters = [];
         document.getElementById('path-display').textContent = '';
-
         const grid = [
             ['H', 'R', 'A', 'L', 'F'],
             ['D', 'B', 'O', 'P', 'K'],
@@ -1280,79 +772,60 @@ Happy Valentine's Day 2026
             ['G', 'E', 'V', 'I', 'M'],
             ['Q', 'C', 'U', 'J', 'X'],
         ];
-
         const container = document.getElementById('honeycomb-grid');
         container.innerHTML = '';
-
         grid.forEach((row, r) => {
             row.forEach((letter, c) => {
                 const cell = document.createElement('div');
                 cell.className = 'hex-cell letter';
                 cell.textContent = letter;
-                cell.dataset.row = r;
-                cell.dataset.col = c;
                 cell.onclick = () => selectHexCell(cell, letter);
                 container.appendChild(cell);
             });
         });
     }
-
     function selectHexCell(cell, letter) {
         if (cell.classList.contains('path-selected')) return;
         cell.classList.add('path-selected');
         pathLetters.push(letter);
-
-        const display = document.getElementById('path-display');
-        display.textContent = pathLetters.join('');
-
+        document.getElementById('path-display').textContent = pathLetters.join('');
         if (pathLetters.length === 3) {
-            const word = pathLetters.join('').toLowerCase();
-            if (word === 'bee') {
+            if (pathLetters.join('').toLowerCase() === 'bee') {
                 levelComplete('bee');
             } else {
-                display.style.animation = 'shake 0.4s ease';
+                document.getElementById('path-display').style.animation = 'shake 0.4s ease';
                 setTimeout(() => {
-                    display.style.animation = '';
+                    document.getElementById('path-display').style.animation = '';
                     clearPath();
                 }, 600);
             }
         }
     }
-
     function clearPath() {
         pathLetters = [];
         document.getElementById('path-display').textContent = '';
         document.querySelectorAll('.hex-cell').forEach(c => c.classList.remove('path-selected'));
     }
 
-    /* ══════════════════════════════════
-       LEVEL 4 — Love Quote Fill ("my")
-       ══════════════════════════════════ */
-    let blanksFilled = 0;
+    /* ════════ LEVEL 4: MY (QUOTE) ════════ */
     let currentBlankIndex = 0;
     const blankAnswers = ['m', 'y', 'm', 'y', 'm', 'y'];
-
     function initLevel4() {
         showScreen('level4-screen');
         updateWordsDisplay(4);
-        blanksFilled = 0;
         currentBlankIndex = 0;
-
-        // Reset blanks
-        for (let i = 0; i < 6; i++) {
-            const blank = document.getElementById('blank-' + i);
-            blank.textContent = '_';
-            blank.style.color = '#d63384';
+        for(let i=0; i<6; i++) {
+            const b = document.getElementById('blank-'+i);
+            b.textContent = '_';
+            b.style.color = '#d63384';
+            b.style.borderStyle = 'dashed';
+            b.style.borderColor = '#d63384';
+            b.style.borderWidth = '2px';
         }
-
-        // Highlight first blank
-        document.getElementById('blank-0').style.borderColor = '#d63384';
         document.getElementById('blank-0').style.borderWidth = '3px';
-
         const choices = document.getElementById('letter-choices-4');
         choices.innerHTML = '';
-        const letters = ['m', 'a', 'y', 'e', 'r', 'i'];
-        letters.forEach(l => {
+        ['m','a','y','e','r','i'].forEach(l => {
             const btn = document.createElement('div');
             btn.className = 'letter-choice';
             btn.textContent = l.toUpperCase();
@@ -1360,218 +833,125 @@ Happy Valentine's Day 2026
             choices.appendChild(btn);
         });
     }
-
-    function pickLetter4(letter, btn) {
-        if (currentBlankIndex >= 6) return;
-
-        const expected = blankAnswers[currentBlankIndex];
-        if (letter === expected) {
-            const blank = document.getElementById('blank-' + currentBlankIndex);
-            blank.textContent = letter;
-            blank.style.borderColor = '#28a745';
-            blank.style.borderStyle = 'solid';
+    function pickLetter4(l, btn) {
+        if(currentBlankIndex >= 6) return;
+        if(l === blankAnswers[currentBlankIndex]) {
+            const b = document.getElementById('blank-'+currentBlankIndex);
+            b.textContent = l;
+            b.style.borderColor = '#28a745';
+            b.style.borderStyle = 'solid';
             currentBlankIndex++;
-
-            // Highlight next blank
-            if (currentBlankIndex < 6) {
-                document.getElementById('blank-' + currentBlankIndex).style.borderColor = '#d63384';
-                document.getElementById('blank-' + currentBlankIndex).style.borderWidth = '3px';
-            }
-
-            if (currentBlankIndex >= 6) {
-                levelComplete('my');
-            }
+            if(currentBlankIndex < 6) document.getElementById('blank-'+currentBlankIndex).style.borderWidth = '3px';
+            if(currentBlankIndex >= 6) levelComplete('my');
         } else {
             btn.style.animation = 'shake 0.4s ease';
             setTimeout(() => btn.style.animation = '', 400);
         }
     }
 
-    /* ══════════════════════════════════
-       LEVEL 5 — Crossword ("valentine")
-       ══════════════════════════════════ */
-    // Highlighted column = 4 spells V-A-L-E-N-T-I-N-E
-    const crosswordData = [
-        { clue: "Deep affection between two people",  answer: "LOVE",  highlightIdx: 2 }, // L-O-V-E → V at idx 2
-        { clue: "Organ that beats for your love",     answer: "HEART", highlightIdx: 2 }, // H-E-A-R-T → A at idx 2
-        { clue: "Warm radiance of candlelight",       answer: "GLOW",  highlightIdx: 1 }, // G-L-O-W → L at idx 1
-        { clue: "Classic red flower of romance",      answer: "ROSE",  highlightIdx: 3 }, // R-O-S-E → E at idx 3
-        { clue: "Sweet term of endearment",           answer: "HONEY", highlightIdx: 2 }, // H-O-N-E-Y → N at idx 2
-        { clue: "Like sugar; a loving word",          answer: "SWEET", highlightIdx: 4 }, // S-W-E-E-T → T at idx 4
-        { clue: "A tender touch of the lips",         answer: "KISS",  highlightIdx: 1 }, // K-I-S-S → I at idx 1
-        { clue: "Romantic dinner drink",              answer: "WINE",  highlightIdx: 2 }, // W-I-N-E → N at idx 2
-        { clue: "To love and cherish deeply",         answer: "ADORE", highlightIdx: 4 }, // A-D-O-R-E → E at idx 4
-    ];
-
+    /* ════════ LEVEL 5: VALENTINE (SCRAMBLE) ════════ */
+    let scrambleAnswer5 = [];
     function initLevel5() {
         showScreen('level5-screen');
         updateWordsDisplay(5);
+        scrambleAnswer5 = [];
 
-        // Build clues
-        const cluesContainer = document.getElementById('crossword-clues');
-        cluesContainer.innerHTML = '';
-        crosswordData.forEach((item, i) => {
-            const div = document.createElement('div');
-            div.className = 'clue-item';
-            div.innerHTML = `<span class="clue-number">${i + 1}</span> ${item.clue} (${item.answer.length} letters)`;
-            cluesContainer.appendChild(div);
+        const target = "VALENTINE";
+        const letters = target.split('').sort(() => Math.random() - 0.5);
+
+        const container = document.getElementById('scramble-letters-5');
+        container.innerHTML = '';
+        letters.forEach((l, i) => {
+            const tile = document.createElement('div');
+            tile.className = 'scramble-tile';
+            tile.textContent = l;
+            tile.onclick = () => selectScramble5(tile, l);
+            container.appendChild(tile);
         });
 
-        // Build grid
-        const grid = document.getElementById('crossword-grid');
-        grid.innerHTML = '';
-
-        const highlightCol = 4; // column index that spells VALENTINE
-
-        crosswordData.forEach((item, rowIdx) => {
-            const row = document.createElement('div');
-            row.className = 'crossword-row';
-
-            const totalCols = 7; // max grid width
-            const startCol = highlightCol - item.highlightIdx;
-
-            for (let c = 0; c < totalCols; c++) {
-                const letterIdx = c - startCol;
-                if (letterIdx >= 0 && letterIdx < item.answer.length) {
-                    const input = document.createElement('input');
-                    input.className = 'crossword-cell';
-                    input.maxLength = 1;
-                    input.dataset.row = rowIdx;
-                    input.dataset.col = letterIdx;
-                    input.dataset.expected = item.answer[letterIdx];
-
-                    if (c === highlightCol) {
-                        input.classList.add('highlighted');
-                    }
-
-                    input.addEventListener('input', (e) => {
-                        const val = e.target.value.toUpperCase();
-                        e.target.value = val;
-                        if (val === item.answer[letterIdx]) {
-                            e.target.classList.add('correct');
-                        } else {
-                            e.target.classList.remove('correct');
-                        }
-                        checkCrosswordComplete();
-
-                        // Auto-advance to next input in same row
-                        if (val.length === 1) {
-                            const nextInput = e.target.nextElementSibling;
-                            if (nextInput && nextInput.tagName === 'INPUT') {
-                                nextInput.focus();
-                            }
-                        }
-                    });
-
-                    // Handle backspace to go to previous cell
-                    input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Backspace' && e.target.value === '') {
-                            const prevInput = e.target.previousElementSibling;
-                            if (prevInput && prevInput.tagName === 'INPUT') {
-                                prevInput.focus();
-                                prevInput.value = '';
-                                prevInput.classList.remove('correct');
-                            }
-                        }
-                    });
-
-                    row.appendChild(input);
-                } else {
-                    const spacer = document.createElement('div');
-                    spacer.style.width = '38px';
-                    spacer.style.height = '38px';
-                    row.appendChild(spacer);
-                }
-            }
-            grid.appendChild(row);
-        });
-    }
-
-    function checkCrosswordComplete() {
-        const allCells = document.querySelectorAll('#crossword-grid .crossword-cell');
-        const allCorrect = Array.from(allCells).every(c => c.classList.contains('correct'));
-        if (allCorrect) {
-            levelComplete('valentine');
+        const slots = document.getElementById('answer-slots-5');
+        slots.innerHTML = '';
+        for(let i=0; i<target.length; i++) {
+            const s = document.createElement('div');
+            s.className = 'answer-slot';
+            slots.appendChild(s);
         }
     }
 
-    /* ══════════════════════════════════
-       FINAL SCREEN — Question
-       ══════════════════════════════════ */
+    function selectScramble5(tile, l) {
+        if (tile.classList.contains('selected')) return;
+        tile.classList.add('selected');
+        scrambleAnswer5.push(l);
+
+        const slots = document.querySelectorAll('#answer-slots-5 .answer-slot');
+        const idx = scrambleAnswer5.length - 1;
+        if(slots[idx]) {
+            slots[idx].textContent = l;
+            slots[idx].classList.add('filled');
+        }
+
+        if(scrambleAnswer5.length === 9) {
+            if(scrambleAnswer5.join('') === 'VALENTINE') {
+                levelComplete('valentine');
+            } else {
+                slots.forEach(s => {
+                    s.style.animation = 'shake 0.4s ease';
+                    setTimeout(() => s.style.animation = '', 400);
+                });
+                setTimeout(() => {
+                    scrambleAnswer5 = [];
+                    document.querySelectorAll('#scramble-letters-5 .scramble-tile').forEach(t => t.classList.remove('selected'));
+                    slots.forEach(s => { s.textContent = ''; s.classList.remove('filled'); });
+                }, 600);
+            }
+        }
+    }
+
+    /* ════════ FINAL ════════ */
     function showFinalScreen() {
         setBackground('bg-final');
         showScreen('final-screen');
-
-        // Animate the final message word by word
-        const messageEl = document.getElementById('final-message-text');
-        messageEl.innerHTML = '';
-        const words = ['Will', 'U', 'bee', 'my', 'valentine?'];
-        words.forEach((word, i) => {
+        const msg = document.getElementById('final-message-text');
+        msg.innerHTML = '';
+        const w = ['Will', 'U', 'bee', 'my', 'valentine?'];
+        w.forEach((txt, i) => {
             setTimeout(() => {
-                if (messageEl.innerHTML) messageEl.innerHTML += ' ';
-                const span = document.createElement('span');
-                span.textContent = word;
-                span.style.opacity = '0';
-                span.style.display = 'inline-block';
-                span.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                span.style.transform = 'translateY(20px)';
-                messageEl.appendChild(span);
-
-                requestAnimationFrame(() => {
-                    span.style.opacity = '1';
-                    span.style.transform = 'translateY(0)';
-                });
-            }, i * 600);
+                if(msg.innerHTML) msg.innerHTML += ' ';
+                const s = document.createElement('span');
+                s.textContent = txt;
+                s.style.opacity = '0';
+                s.style.display = 'inline-block';
+                s.style.transition = 'all 0.6s ease';
+                s.style.transform = 'translateY(20px)';
+                msg.appendChild(s);
+                requestAnimationFrame(() => { s.style.opacity = '1'; s.style.transform = 'translateY(0)'; });
+            }, i*600);
         });
-
-        // Show Yes/No buttons after the message finishes
         setTimeout(() => {
             const btns = document.getElementById('yes-no-buttons');
             btns.style.display = 'flex';
             btns.style.opacity = '0';
-            btns.style.transition = 'opacity 0.6s ease';
-            // Position the No button initially to the right of Yes
-            const noBtn = document.getElementById('no-btn');
-            noBtn.style.position = 'relative';
-            requestAnimationFrame(() => { btns.style.opacity = '1'; });
-        }, words.length * 600 + 400);
+            btns.style.transition = 'opacity 1s';
+            requestAnimationFrame(() => btns.style.opacity = '1');
+        }, w.length*600 + 500);
     }
 
-    /* ══════════════════════════════════
-       RUNAWAY "NO" BUTTON
-       ══════════════════════════════════ */
     function runAway(btn) {
-        const container = btn.closest('.screen');
-        const rect = container.getBoundingClientRect();
-
-        // Random position within the screen area
-        const maxX = rect.width - btn.offsetWidth - 20;
-        const maxY = rect.height - btn.offsetHeight - 20;
-
-        const newX = Math.random() * maxX - maxX / 2;
-        const newY = Math.random() * maxY - maxY / 2;
-
+        const rect = document.getElementById('final-screen').getBoundingClientRect();
+        const maxX = rect.width - btn.offsetWidth - 40;
+        const maxY = rect.height - btn.offsetHeight - 40;
+        const x = Math.random() * maxX - maxX/2;
+        const y = Math.random() * maxY - maxY/2;
         btn.style.position = 'absolute';
-        btn.style.left = (rect.width / 2 + newX) + 'px';
-        btn.style.top = (rect.height / 2 + newY) + 'px';
+        btn.style.left = (rect.width/2 + x) + 'px';
+        btn.style.top = (rect.height/2 + y) + 'px';
         btn.style.transform = 'translate(-50%, -50%)';
-
-        // Shrink it a bit each time
-        const currentSize = parseFloat(btn.style.fontSize) || 0.9;
-        btn.style.fontSize = Math.max(0.6, currentSize - 0.05) + 'rem';
     }
 
-    /* ══════════════════════════════════
-       "YES" — Reveal Poem + Photos
-       ══════════════════════════════════ */
     function sayYes() {
         setBackground('bg-final');
         showScreen('reveal-screen');
-
-        // Big celebration
-        for (let wave = 0; wave < 5; wave++) {
-            setTimeout(() => celebrate(), wave * 400);
-        }
+        for(let i=0; i<5; i++) setTimeout(() => celebrate(), i*400);
     }
     </script>
 </body>
