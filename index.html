@@ -206,30 +206,38 @@
 
 /* ── Level 5 (Photo Drag) ── */
         .letter-bank {
-            display: flex; gap: 5px; justify-content: center; margin-bottom: 20px; min-height: 50px;
+            display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; min-height: 50px; flex-wrap: wrap;
         }
         .v-letter {
             width: 40px; height: 50px; 
-            border-bottom: 3px solid #f0d0e0;
+            background: white; border: 2px solid #f0d0e0; border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem; font-weight: bold; color: #d63384;
             font-family: 'Dancing Script', cursive;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
         }
         .v-letter.revealed {
-            animation: popIn 0.5s ease;
+            background: #ff6b9d; color: white; border-color: #ff6b9d;
+            transform: scale(1.1);
         }
 
         .timeline-drop-zone {
-            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px;
-            width: 100%; justify-content: flex-start; /* Allow scroll on small screens */
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px;
+            width: 100%; justify-content: flex-start;
         }
         
+        /* Scrollbar styling for timeline */
+        .timeline-drop-zone::-webkit-scrollbar { height: 8px; }
+        .timeline-drop-zone::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+        .timeline-drop-zone::-webkit-scrollbar-thumb { background: #ff6b9d; border-radius: 4px; }
+
         .year-slot {
             min-width: 80px; height: 100px;
             border: 2px dashed #ccc; border-radius: 8px;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
             position: relative; background: rgba(255,255,255,0.5);
-            padding-bottom: 5px; font-size: 0.8rem; color: #666; font-weight: bold;
+            padding-bottom: 5px; font-size: 0.8rem; color: #666; font-weight: bold; flex-shrink: 0;
         }
         .year-slot.correct {
             border-color: #28a745; border-style: solid; background: white;
@@ -246,7 +254,7 @@
         }
         .draggable-photo:active { cursor: grabbing; transform: scale(1.1); }
         .draggable-photo.placed {
-            width: 100%; height: 80px; /* Fit into slot */
+            width: 100%; height: 80px;
             position: absolute; top: 0; left: 0; 
             border-radius: 6px 6px 0 0; border: none;
         }
@@ -364,19 +372,21 @@
             font-size: 1.15rem; color: #555; line-height: 1.8; 
         }
         .hidden-my {
-            font-weight: 700;
-            cursor: pointer;
+            font-weight: inherit; /* Blends in with normal text */
+            color: inherit;       /* No special color until clicked */
+            cursor: pointer;      /* Cursor changes to hand on hover */
             transition: all 0.3s ease;
             display: inline-block;
-            padding: 0 2px;
+            padding: 0 1px;
             border-radius: 4px;
         }
         .hidden-my:hover {
-            color: #d63384;
+            color: #d63384;       /* Slight pink hint on hover */
             background: rgba(214, 51, 132, 0.1);
         }
         .hidden-my.found {
             color: #ff6b9d;
+            font-weight: bold;    /* Becomes bold only AFTER clicking */
             transform: scale(1.3);
             margin: 0 3px;
         }
@@ -1077,32 +1087,32 @@ Happy Valentine's Day 2026
     }
 
 /* ════════ LEVEL 5: VALENTINE (PHOTO DRAG) ════════ */
-    // Years: 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 (9 Years)
-    // Word:  V     A     L     E     N     T     I     N     E    (9 Letters)
-    
     const TARGET_WORD = "VALENTINE";
-    let revealedIndices = []; 
     let correctPlacements = 0;
+    let shuffledLetters = [];
 
     function initLevel5() {
         showScreen('level5-screen');
         updateWordsDisplay(5);
-        revealedIndices = new Array(9).fill(false);
         correctPlacements = 0;
         document.getElementById('valentine-final-input').style.display = 'none';
 
-        // 1. Setup Letter Bank (Empty Slots)
+        // 1. Prepare Scrambled Letters
+        // We want the result to be scrambled, so we shuffle the target word upfront
+        shuffledLetters = TARGET_WORD.split('').sort(() => Math.random() - 0.5);
+
+        // 2. Setup Letter Bank (9 Empty Tiles)
         const lBank = document.getElementById('letter-bank');
         lBank.innerHTML = '';
         for(let i=0; i<9; i++) {
             const lDiv = document.createElement('div');
             lDiv.className = 'v-letter';
-            lDiv.id = `v-letter-${i}`;
-            lDiv.textContent = ''; // Hidden initially
+            lDiv.id = `v-letter-${i}`; // We will fill these 0 to 8 sequentially
+            lDiv.textContent = '?'; 
             lBank.appendChild(lDiv);
         }
 
-        // 2. Setup Timeline Slots (2017-2025)
+        // 3. Setup Timeline Slots (2017-2025)
         const tContainer = document.getElementById('timeline-container');
         tContainer.innerHTML = '';
         const startYear = 2017;
@@ -1113,57 +1123,83 @@ Happy Valentine's Day 2026
             slot.textContent = year;
             slot.dataset.year = year;
             
-            // Dragover event
             slot.ondragover = (e) => e.preventDefault(); 
             slot.ondrop = (e) => dropPhoto(e, year);
+            
+            // Touch support for mobile
+            slot.ontouchend = (e) => dropPhotoTouch(e, year);
             
             tContainer.appendChild(slot);
         }
 
-        // 3. Setup Photo Bank (Scrambled)
+        // 4. Setup Photo Bank (Scrambled)
         const pBank = document.getElementById('photo-bank');
         pBank.innerHTML = '';
         let years = [];
         for(let i=0; i<9; i++) years.push(startYear + i);
-        
-        // Shuffle years
         years.sort(() => Math.random() - 0.5);
 
         years.forEach(year => {
             const img = document.createElement('img');
-            img.src = `${year}.png`; // Assumes images are named 2017.png, 2018.png etc
+            img.src = `${year}.png`; 
             img.className = 'draggable-photo';
             img.draggable = true;
             img.dataset.year = year;
             img.id = `photo-${year}`;
             
+            // Desktop Drag
             img.ondragstart = (e) => {
                 e.dataTransfer.setData("text/plain", year);
+            };
+            
+            // Mobile Touch
+            img.ontouchstart = (e) => {
+                selectedPhotoId = year; // Global var for touch
+                // Visual feedback
+                img.style.opacity = '0.5';
+            };
+            img.ontouchend = (e) => {
+                img.style.opacity = '1';
             };
             
             pBank.appendChild(img);
         });
     }
 
+    // Global for simple touch tracking
+    let selectedPhotoId = null; 
+
     function dropPhoto(e, slotYear) {
         e.preventDefault();
         const draggedYear = parseInt(e.dataTransfer.getData("text/plain"));
-        
+        handleDropLogic(draggedYear, slotYear, e.target);
+    }
+
+    function dropPhotoTouch(e, slotYear) {
+        if (selectedPhotoId) {
+            handleDropLogic(selectedPhotoId, slotYear, e.target);
+            selectedPhotoId = null;
+        }
+    }
+
+    function handleDropLogic(draggedYear, slotYear, target) {
         if (draggedYear === slotYear) {
             // Correct!
             const img = document.getElementById(`photo-${draggedYear}`);
-            const slot = e.target.closest('.year-slot');
+            const slot = target.closest('.year-slot');
             
-            if (slot.querySelector('img')) return; // Already filled
+            if (slot.querySelector('img')) return; // Slot already full
 
             // Move image visually
             img.classList.add('placed');
             img.draggable = false;
+            img.ontouchstart = null; // Disable touch
             slot.appendChild(img);
             slot.classList.add('correct');
             
+            // Reveal the next letter in the sequence (Left to Right)
+            revealNextScrambledLetter();
             correctPlacements++;
-            revealRandomLetter();
 
             if (correctPlacements === 9) {
                 setTimeout(() => {
@@ -1172,29 +1208,20 @@ Happy Valentine's Day 2026
             }
         } else {
             // Wrong
-            const slot = e.target.closest('.year-slot');
+            const slot = target.closest('.year-slot');
             slot.style.animation = 'shake 0.4s ease';
             setTimeout(() => slot.style.animation = '', 400);
         }
     }
 
-    function revealRandomLetter() {
-        // Find all indices that haven't been revealed yet
-        const available = [];
-        revealedIndices.forEach((isRev, idx) => {
-            if (!isRev) available.push(idx);
-        });
-
-        if (available.length > 0) {
-            // Pick random index
-            const randIndex = available[Math.floor(Math.random() * available.length)];
-            revealedIndices[randIndex] = true;
-
-            // Show letter
-            const lDiv = document.getElementById(`v-letter-${randIndex}`);
-            lDiv.textContent = TARGET_WORD[randIndex];
-            lDiv.classList.add('revealed');
-        }
+    function revealNextScrambledLetter() {
+        // We fill the slots 0, 1, 2... sequentially with the SCRAMBLED array
+        // correctPlacements is 0-indexed count, so it works as index
+        const letter = shuffledLetters[correctPlacements];
+        const tile = document.getElementById(`v-letter-${correctPlacements}`);
+        
+        tile.textContent = letter;
+        tile.classList.add('revealed');
     }
 
     function checkLevel5Input() {
@@ -1214,7 +1241,7 @@ Happy Valentine's Day 2026
         showScreen('final-screen');
         const msg = document.getElementById('final-message-text');
         msg.innerHTML = '';
-        const w = ['Will', 'U', 'bee', 'my', 'valentine?'];
+        const w = ['Will', 'you', 'bee', 'my', 'valentine?'];
         w.forEach((txt, i) => {
             setTimeout(() => {
                 if(msg.innerHTML) msg.innerHTML += ' ';
