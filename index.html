@@ -273,33 +273,59 @@
             background: white;
         }
 
-        /* ── Rebus (Level 2) ── */
-        .rebus-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+/* ── Level 2 (Blur Slider) ── */
+        .blur-container {
+            width: 250px;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 50%; /* Circle shape looks nice for portraits */
+            border: 5px solid white;
+            box-shadow: 0 8px 25px rgba(214, 51, 132, 0.2);
+            margin: 0 auto 20px;
+            background: #eee;
         }
-        .rebus-emoji { font-size: 3rem; animation: pulse 2s ease infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        .rebus-options { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
-        .rebus-option {
-            padding: 12px 30px;
-            background: white;
-            border: 2px solid #f0d0e0;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #666;
+        
+        #blur-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(20px); /* Start blurry */
+            transition: filter 0.1s linear; /* Smooth slider movement */
+        }
+
+        .blur-slider {
+            width: 80%;
+            max-width: 300px;
+            height: 10px;
+            -webkit-appearance: none;
+            background: #f0d0e0;
+            border-radius: 5px;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .blur-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #d63384;
             cursor: pointer;
-            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
         }
-        .rebus-option:hover { border-color: #d63384; color: #d63384; }
-        .rebus-option.correct { background: #d63384; color: white; border-color: #d63384; }
-        .rebus-option.wrong { background: #ffebee; border-color: #ef5350; color: #ef5350; animation: shake 0.4s ease; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+        .blur-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .slider-instruction {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
 /* ── Word Search (Level 3) ── */
         .ws-grid {
@@ -511,24 +537,29 @@
         <div id="hint-1" style="display:none" class="hint-text">The highlighted cells spell out the first word of the question.</div>
     </div>
 
-    <div class="screen" id="level2-screen">
+<div class="screen" id="level2-screen">
         <div class="level-badge">Puzzle 2 of 5</div>
-        <div class="puzzle-title">Emoji Riddle</div>
-        <div class="puzzle-instruction">What single letter does this emoji represent?</div>
+        <div class="puzzle-title">The Future</div>
+        <div class="puzzle-instruction">Who do I see when I look at our future?</div>
+        
         <div class="revealed-words" id="words-display-2"></div>
-        <div class="rebus-container">
-            <span class="rebus-emoji">👉</span>
-            <span class="rebus-emoji">🫵</span>
-            <span class="rebus-emoji">👈</span>
+
+        <div class="blur-container">
+            <img src="2019.png" id="blur-img" alt="Who is this?">
         </div>
-        <div class="rebus-options">
-            <div class="rebus-option" onclick="checkRebus('I')">I</div>
-            <div class="rebus-option" onclick="checkRebus('U')">U</div>
-            <div class="rebus-option" onclick="checkRebus('W')">W</div>
-            <div class="rebus-option" onclick="checkRebus('Y')">Y</div>
+
+        <div class="slider-instruction">Slide to clarify</div>
+        <input type="range" min="0" max="100" value="0" class="blur-slider" oninput="updateBlur(this.value)">
+
+        <div id="you-input-container" style="display: none; margin-top: 15px; animation: fadeIn 0.5s ease;">
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <input type="text" class="puzzle-input" id="you-input" placeholder="Who is it?">
+                <button class="btn btn-primary btn-small" onclick="checkLevel2Input()">OK</button>
+            </div>
         </div>
+
         <button class="hint-btn" onclick="showHint(2)">Need a hint?</button>
-        <div id="hint-2" style="display:none" class="hint-text">The fingers are pointing at...</div>
+        <div id="hint-2" style="display:none" class="hint-text">It's not me, it's...</div>
     </div>
 
 <div class="screen" id="level3-screen">
@@ -857,24 +888,53 @@ Happy Valentine's Day 2026
         }
     }
 
-    /* ════════ LEVEL 2: U (REBUS) ════════ */
+/* ════════ LEVEL 2: YOU (BLUR SLIDER) ════════ */
     function initLevel2() {
         showScreen('level2-screen');
         updateWordsDisplay(2);
-        document.querySelectorAll('.rebus-option').forEach(o => o.className = 'rebus-option');
+        
+        // Reset state
+        const img = document.getElementById('blur-img');
+        const slider = document.querySelector('.blur-slider');
+        const inputCont = document.getElementById('you-input-container');
+        
+        slider.value = 0;
+        img.style.filter = 'blur(20px)';
+        inputCont.style.display = 'none';
+        document.getElementById('you-input').value = '';
     }
-    function checkRebus(ans) {
-        document.querySelectorAll('.rebus-option').forEach(o => {
-            if (o.textContent === ans) {
-                if (ans === 'U') {
-                    o.classList.add('correct');
-                    levelComplete('U');
-                } else {
-                    o.classList.add('wrong');
-                    setTimeout(() => o.classList.remove('wrong'), 500);
-                }
+
+    function updateBlur(val) {
+        const img = document.getElementById('blur-img');
+        // Max blur is 20px, Min blur is 0px
+        // When val is 0, blur is 20. When val is 100, blur is 0.
+        const blurAmount = 20 - (val / 100 * 20);
+        img.style.filter = `blur(${blurAmount}px)`;
+
+        // Show input box if slider is near the end (clear)
+        const inputCont = document.getElementById('you-input-container');
+        if (val > 85) {
+            if (inputCont.style.display === 'none') {
+                inputCont.style.display = 'block';
             }
-        });
+        }
+    }
+
+    function checkLevel2Input() {
+        const val = document.getElementById('you-input').value.trim().toUpperCase();
+        
+        // Accept YOU, U, or STEVEN (with a funny redirect for Steven)
+        if (val === 'YOU' || val === 'U') {
+            levelComplete('U');
+        } else if (val === 'STEVEN' || val === 'STEVE') {
+            alert("Too formal! Who is he to me?");
+        } else if (val === 'ME') {
+             alert("Not me... YOU!");
+        } else {
+            const btn = document.querySelector('#you-input-container button');
+            btn.style.animation = 'shake 0.4s ease';
+            setTimeout(() => btn.style.animation = '', 400);
+        }
     }
 
 /* ════════ LEVEL 3: BEE (WORD SEARCH) ════════ */
