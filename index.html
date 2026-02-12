@@ -1278,16 +1278,34 @@ function checkLevel2Input() {
         }, w.length*600 + 500);
     }
 
+/* ════════ RUNAWAY "NO" BUTTON ════════ */
     function runAway(btn) {
-        const rect = document.getElementById('final-screen').getBoundingClientRect();
-        const maxX = rect.width - btn.offsetWidth - 40;
-        const maxY = rect.height - btn.offsetHeight - 40;
-        const x = Math.random() * maxX - maxX/2;
-        const y = Math.random() * maxY - maxY/2;
-        btn.style.position = 'absolute';
-        btn.style.left = (rect.width/2 + x) + 'px';
-        btn.style.top = (rect.height/2 + y) + 'px';
-        btn.style.transform = 'translate(-50%, -50%)';
+        // 1. Move the button to the <body> so it's not trapped in the small container
+        if (btn.parentNode !== document.body) {
+            document.body.appendChild(btn);
+        }
+
+        // 2. Calculate the available screen space
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // 3. Calculate a random position (subtracting button size + padding)
+        // This ensures it never goes off the edge
+        const maxLeft = viewportWidth - btn.offsetWidth - 50;
+        const maxTop = viewportHeight - btn.offsetHeight - 50;
+
+        const newLeft = Math.max(20, Math.random() * maxLeft);
+        const newTop = Math.max(20, Math.random() * maxTop);
+
+        // 4. Apply Fixed positioning
+        btn.style.position = 'fixed';
+        btn.style.left = newLeft + 'px';
+        btn.style.top = newTop + 'px';
+        
+        // 5. Reset styles that might interfere
+        btn.style.zIndex = '9999';   // Make sure it floats above everything
+        btn.style.transform = 'none'; // Remove any centering logic
+        btn.style.margin = '0'; 
     }
 
     function sayYes() {
