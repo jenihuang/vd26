@@ -1308,9 +1308,25 @@ function checkLevel2Input() {
         btn.style.margin = '0'; 
     }
 
+/* ════════ "YES" — Reveal Poem + Photos ════════ */
     function sayYes() {
+        // 1. Remove the "No" button from the DOM entirely
+        const noBtn = document.getElementById('no-btn');
+        if (noBtn) {
+            noBtn.remove();
+        }
+
+        // 2. Hide the button container (for the "Yes" button)
+        const btnContainer = document.getElementById('yes-no-buttons');
+        if (btnContainer) {
+            btnContainer.style.display = 'none';
+        }
+
+        // 3. Transition to the Reveal Screen
         setBackground('bg-final');
         showScreen('reveal-screen');
+
+        // 4. Big celebration
         for(let i=0; i<5; i++) setTimeout(() => celebrate(), i*400);
     }
     </script>
