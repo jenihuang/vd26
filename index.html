@@ -19,8 +19,8 @@
     </div>
 
     <div class="screen" id="level1-screen">
-        <div class="level-badge">Puzzle 1 of 5</div>
-        <div class="puzzle-title">The First Word</div>
+        <div class="level-badge">Puzzle 5</div>
+        <div class="puzzle-title">Crossword</div>
         <div class="puzzle-instruction">Fill in the crossword. The highlighted letters reveal the answer!</div>
 
         <div class="revealed-words" id="words-display-1"></div>
@@ -33,7 +33,7 @@
     </div>
 
     <div class="screen" id="level2-screen">
-        <div class="level-badge">Puzzle 2 of 5</div>
+        <div class="level-badge">Puzzle 1</div>
         <div class="puzzle-title">The Future</div>
         <div class="puzzle-instruction">Who do I see when I look at our future?</div>
 
@@ -58,7 +58,7 @@
     </div>
 
     <div class="screen" id="level3-screen">
-        <div class="level-badge">Puzzle 3 of 5</div>
+        <div class="level-badge">Puzzle 3</div>
         <div class="puzzle-title">Word Search</div>
         <div class="puzzle-instruction">Find 4 hidden words that describe you.</div>
 
@@ -82,11 +82,11 @@
         </div>
 
         <button class="hint-btn" onclick="showHint(3)">Need a hint?</button>
-        <div id="hint-3" style="display:none" class="hint-text">Look for words like 'SWEET' or 'BUSY'</div>
+        <div id="hint-3" style="display:none" class="hint-text">Look for words like 'LOYAL' or 'SWEET'</div>
     </div>
 
     <div class="screen" id="level4-screen">
-        <div class="level-badge">Puzzle 4 of 5</div>
+        <div class="level-badge">Puzzle 4</div>
         <div class="puzzle-title">Hidden Meaning</div>
         <div class="puzzle-instruction">Something should just click...</div>
 
@@ -105,11 +105,11 @@
         </div>
 
         <button class="hint-btn" onclick="showHint(4)">Need a hint?</button>
-        <div id="hint-4" style="display:none" class="hint-text">Try clicking the ends of the bold words.</div>
+        <div id="hint-4" style="display:none" class="hint-text">Try clicking parts of certain words.</div>
     </div>
 
     <div class="screen" id="level5-screen">
-        <div class="level-badge">Puzzle 5 of 5</div>
+        <div class="level-badge">Puzzle 2</div>
         <div class="puzzle-title">Our Timeline</div>
         <div class="puzzle-instruction">Drag each photo to the year it was taken to unlock the letters.</div>
 
@@ -122,7 +122,7 @@
         <div class="photo-bank" id="photo-bank"></div>
 
         <div id="valentine-final-input" style="display: none; margin-top: 20px; animation: fadeIn 0.5s ease;">
-            <div class="puzzle-instruction" style="color: #d63384; font-weight: 600;">Unscramble the letters to answer: Will you be my...?</div>
+            <div class="puzzle-instruction" style="color: #d63384; font-weight: 600;">Unscramble the letters to answer</div>
             <div style="display: flex; gap: 10px; justify-content: center;">
                 <input type="text" class="puzzle-input" id="final-word-input" placeholder="Type answer">
                 <button class="btn btn-primary btn-small" onclick="checkLevel5Input()">OK</button>
@@ -137,7 +137,7 @@
         <div class="final-message" id="final-message-text"></div>
         <div class="final-bee">🐝</div>
         <div class="yes-no-container" id="yes-no-buttons" style="display: none;">
-            <button class="btn btn-yes" onclick="sayYes()">Yes!</button>
+            <button class="btn btn-yes" onclick="sayYes()">Yes</button>
             <button class="btn btn-no" id="no-btn" onmouseover="runAway(this)" ontouchstart="runAway(this)">No</button>
         </div>
     </div>
