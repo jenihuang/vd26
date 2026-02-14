@@ -8,9 +8,9 @@ const solvedWords = new Array(WORDS.length).fill(null);
 let solvedCount = 0;
 let currentLevel = 0;
 
-/* Puzzle presentation order: you, valentine, my, bee, Will
+/* Puzzle presentation order: you, valentine, bee, my, Will
    Each number is the original puzzle/level number (1-indexed) */
-const PUZZLE_ORDER = [2, 5, 4, 3, 1];
+const PUZZLE_ORDER = [2, 5, 3, 4, 1];
 
 /* ── BACKGROUND: Floating Hearts ── */
 function createFloatingHearts() {
