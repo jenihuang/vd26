@@ -4,8 +4,13 @@
 
 /* ── GAME STATE ── */
 const WORDS = ['Will', 'you', 'bee', 'my', 'valentine'];
-const solvedWords = [];
+const solvedWords = new Array(WORDS.length).fill(null);
+let solvedCount = 0;
 let currentLevel = 0;
+
+/* Puzzle presentation order: you, valentine, my, bee, Will
+   Each number is the original puzzle/level number (1-indexed) */
+const PUZZLE_ORDER = [2, 5, 4, 3, 1];
 
 /* ── BACKGROUND: Floating Hearts ── */
 function createFloatingHearts() {
@@ -33,7 +38,7 @@ function showScreen(id) {
 }
 
 function updateProgress() {
-    const pct = (solvedWords.length / WORDS.length) * 100;
+    const pct = (solvedCount / WORDS.length) * 100;
     document.getElementById('progress-bar').style.width = pct + '%';
 }
 
@@ -43,8 +48,8 @@ function updateWordsDisplay(level) {
     container.innerHTML = '';
     WORDS.forEach((w, i) => {
         const span = document.createElement('span');
-        span.className = 'revealed-word' + (i < solvedWords.length ? '' : ' pending');
-        span.textContent = i < solvedWords.length ? solvedWords[i] : '???';
+        span.className = 'revealed-word' + (solvedWords[i] ? '' : ' pending');
+        span.textContent = solvedWords[i] || '???';
         container.appendChild(span);
     });
 }
@@ -86,7 +91,9 @@ function showHint(level) {
 
 /* ── LEVEL FLOW ── */
 function levelComplete(word) {
-    solvedWords.push(word);
+    const wordIndex = WORDS.indexOf(word);
+    solvedWords[wordIndex] = word;
+    solvedCount++;
     updateProgress();
     celebrate();
     setTimeout(() => {
@@ -101,17 +108,28 @@ function levelComplete(word) {
 
 function startGame() {
     currentLevel = 0;
+    solvedCount = 0;
+    for (let i = 0; i < WORDS.length; i++) solvedWords[i] = null;
     initLevel(1);
 }
 
-function initLevel(level) {
-    switch (level) {
-        case 1: setBackground('bg-level1'); initLevel1(); break;
-        case 2: setBackground('bg-level2'); initLevel2(); break;
-        case 3: setBackground('bg-level3'); initLevel3(); break;
-        case 4: setBackground('bg-level4'); initLevel4(); break;
-        case 5: setBackground('bg-level5'); initLevel5(); break;
+function initLevel(step) {
+    const puzzleNum = PUZZLE_ORDER[step - 1];
+    const backgrounds = ['bg-level1', 'bg-level2', 'bg-level3', 'bg-level4', 'bg-level5'];
+    setBackground(backgrounds[step - 1]);
+
+    switch (puzzleNum) {
+        case 1: initLevel1(); break;
+        case 2: initLevel2(); break;
+        case 3: initLevel3(); break;
+        case 4: initLevel4(); break;
+        case 5: initLevel5(); break;
     }
+
+    // Update the puzzle badge to show the current step number
+    const activeScreen = document.querySelector('.screen.active');
+    const badge = activeScreen.querySelector('.level-badge');
+    if (badge) badge.textContent = `Puzzle ${step} of 5`;
 }
 
 /* ── FINAL SCREEN ── */
