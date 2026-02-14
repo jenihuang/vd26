@@ -4,8 +4,8 @@
 
 /* ════════ LEVEL 1: WILL (CROSSWORD) ════════ */
 const level1Data = [
-    { clue: "Which resort did we first meet?", answer: "SQUAW", targetIdx: 4 },
-    { clue: "Who is the bud?", answer: "MILO", targetIdx: 1 },
+    { clue: "Where we met", answer: "SQUAW", targetIdx: 4 },
+    { clue: "The bud", answer: "MILO", targetIdx: 1 },
     { clue: "Babbaz birth name", answer: "WILBUR", targetIdx: 2 },
     { clue: "Our favorite nautical friend", answer: "NARWHAL", targetIdx: 6 }
 ];
