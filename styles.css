@@ -1,0 +1,498 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: background 0.8s ease;
+    padding: 20px 0;
+}
+
+/* ── Floating Hearts Background ── */
+.hearts-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    bottom: -80px;
+    font-size: 24px;
+    opacity: 0.15;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.15; }
+    50% { opacity: 0.25; }
+    100% { transform: translateY(-110vh) rotate(360deg) scale(0.5); opacity: 0; }
+}
+
+/* ── Screen Container ── */
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    z-index: 10;
+    position: relative;
+    max-width: 1100px;
+    width: 95%;
+    animation: fadeIn 0.6s ease;
+}
+
+.screen.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Welcome Screen ── */
+#welcome-screen .title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    white-space: nowrap;
+    color: #d63384;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.2);
+}
+
+@media (max-width: 768px) {
+    #welcome-screen .title { font-size: 2rem; white-space: normal; }
+}
+
+#welcome-screen .subtitle {
+    color: #888;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+/* ── Shared Styles ── */
+.level-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b9d, #c44569);
+    color: white;
+    padding: 6px 20px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.puzzle-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #d63384;
+    margin-bottom: 8px;
+}
+
+.puzzle-instruction {
+    color: #999;
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.revealed-words {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.revealed-word {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: #d63384;
+    background: rgba(214, 51, 132, 0.08);
+    padding: 4px 14px;
+    border-radius: 12px;
+}
+
+.revealed-word.pending {
+    color: #ddd;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* ── Buttons ── */
+.btn {
+    padding: 14px 40px;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ff6b9d, #ee5a6f);
+    color: white;
+    box-shadow: 0 4px 20px rgba(238, 90, 111, 0.35);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(238, 90, 111, 0.5);
+}
+
+.btn-small {
+    padding: 10px 28px;
+    font-size: 0.85rem;
+}
+
+/* ── Input Box ── */
+.puzzle-input {
+    padding: 10px 20px;
+    border: 2px solid #f0d0e0;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    text-align: center;
+    color: #d63384;
+    width: 150px;
+    transition: all 0.3s ease;
+}
+.puzzle-input:focus {
+    border-color: #d63384;
+    box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.1);
+}
+
+/* ── Progress Bar ── */
+.progress-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 100;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b9d, #ee5a6f, #d63384);
+    transition: width 0.6s ease;
+    border-radius: 0 3px 3px 0;
+}
+
+/* ── Level 5 (Photo Drag) ── */
+.letter-bank {
+    display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; min-height: 60px; flex-wrap: wrap;
+}
+.v-letter {
+    width: 50px; height: 60px;
+    background: white; border: 2px solid #f0d0e0; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: bold; color: #d63384;
+    font-family: 'Dancing Script', cursive;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+.v-letter.revealed {
+    background: #ff6b9d; color: white; border-color: #ff6b9d;
+    transform: scale(1.1);
+}
+
+.timeline-drop-zone {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.year-slot {
+    width: 100px; height: 130px;
+    border: 3px dashed #ccc; border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    position: relative; background: rgba(255,255,255,0.6);
+    padding-bottom: 10px; font-size: 1rem; color: #666; font-weight: bold; flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+.year-slot.correct {
+    border-color: #28a745; border-style: solid; background: white;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+}
+
+.photo-bank {
+    display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; min-height: 100px;
+}
+
+.draggable-photo {
+    width: 90px; height: 90px;
+    object-fit: cover; border-radius: 8px;
+    cursor: grab; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border: 3px solid white; transition: transform 0.2s;
+}
+.draggable-photo:active { cursor: grabbing; transform: scale(1.1); }
+.draggable-photo:hover { transform: scale(1.05); }
+
+.draggable-photo.placed {
+    width: 100%; height: 95px;
+    position: absolute; top: 0; left: 0;
+    border-radius: 9px 9px 0 0; border: none;
+}
+
+/* ── Level 2 (Blur Slider) ── */
+.blur-container {
+    width: 250px;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 8px 25px rgba(214, 51, 132, 0.2);
+    margin: 0 auto 20px;
+    background: #eee;
+}
+
+#blur-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(20px);
+    transition: filter 0.1s linear;
+}
+
+.blur-slider {
+    width: 80%;
+    max-width: 300px;
+    height: 10px;
+    -webkit-appearance: none;
+    background: #f0d0e0;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.blur-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #d63384;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+.blur-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.slider-instruction {
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ── Word Search (Level 3) ── */
+.ws-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 35px);
+    gap: 4px;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.5);
+    padding: 10px;
+    border-radius: 15px;
+    justify-content: center;
+}
+.ws-cell {
+    width: 35px; height: 35px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1rem;
+    background: white; border-radius: 6px;
+    cursor: pointer; color: #d63384;
+    user-select: none;
+    border: 1px solid #f0d0e0;
+}
+.ws-cell.found {
+    background: #ff6b9d; color: white; border-color: #ff6b9d;
+    animation: popIn 0.3s ease;
+}
+@keyframes popIn { 0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+.ws-word-list {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; min-height: 30px;
+}
+.ws-word {
+    font-size: 0.9rem; color: #d63384; text-transform: uppercase; letter-spacing: 1px;
+    padding: 5px 12px; background: white; border-radius: 20px;
+    border: 2px solid #f0d0e0; font-weight: bold;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.ws-word.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    background: #ff6b9d;
+    color: white;
+    border-color: #ff6b9d;
+    box-shadow: 0 4px 10px rgba(255, 107, 157, 0.3);
+}
+
+/* ── Level 4 ("my") ── */
+.story-container {
+    background: white; border-radius: 20px; padding: 30px; margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); max-width: 500px;
+    text-align: left; transition: all 0.5s ease;
+}
+.story-text {
+    font-size: 1.15rem; color: #555; line-height: 1.8;
+}
+.hidden-my {
+    font-weight: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    padding: 0 1px;
+    border-radius: 4px;
+}
+.hidden-my:hover {
+    color: #d63384;
+    background: rgba(214, 51, 132, 0.1);
+}
+.hidden-my.found {
+    color: #ff6b9d;
+    font-weight: bold;
+    transform: scale(1.3);
+    margin: 0 3px;
+}
+
+/* ── Crossword (Used in Level 1) ── */
+.crossword-clues { text-align: left; margin-bottom: 20px; max-width: 400px; width: 100%; }
+.clue-item {
+    color: #666; font-size: 0.85rem; margin-bottom: 8px; padding: 8px 14px;
+    background: white; border-radius: 10px; display: flex; gap: 10px; align-items: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.clue-number {
+    background: #d63384; color: white; width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; flex-shrink: 0;
+}
+.crossword-grid { display: flex; flex-direction: column; gap: 4px; align-items: center; margin-bottom: 25px; }
+.crossword-row { display: flex; gap: 4px; }
+.crossword-cell {
+    width: 38px; height: 38px; text-align: center; font-size: 1rem; font-weight: 600; text-transform: uppercase;
+    border: 2px solid #f0d0e0; border-radius: 6px; outline: none; color: #d63384; background: white;
+    transition: all 0.2s ease; font-family: 'Poppins', sans-serif;
+}
+.crossword-cell:focus { border-color: #d63384; box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.15); }
+.crossword-cell.correct { background: #d4edda; border-color: #28a745; color: #28a745; }
+
+.crossword-cell.extraction-cell {
+    border-color: #d63384;
+    background: #fff0f5;
+}
+.crossword-cell.extraction-cell.correct {
+    background: #ff6b9d;
+    color: white;
+    border-color: #ff6b9d;
+}
+
+/* ── Final & Reveal Screens ── */
+.final-message { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #d63384; margin-bottom: 10px; text-shadow: 2px 2px 8px rgba(214, 51, 132, 0.15); }
+.final-bee { font-size: 3rem; margin: 10px 0; animation: buzz 0.5s ease infinite alternate; }
+.yes-no-container { display: flex; gap: 30px; justify-content: center; align-items: center; margin-top: 25px; min-height: 80px; position: relative; }
+.btn-yes {
+    background: linear-gradient(135deg, #ff6b9d, #ee5a6f); color: white; font-size: 1.4rem;
+    padding: 16px 50px; box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4); animation: pulseYes 1.5s ease infinite;
+}
+.btn-yes:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(238, 90, 111, 0.6); }
+@keyframes pulseYes { 0%, 100% { box-shadow: 0 4px 20px rgba(238, 90, 111, 0.4); } 50% { box-shadow: 0 4px 30px rgba(238, 90, 111, 0.7); } }
+.btn-no {
+    background: #f0f0f0; color: #999; font-size: 0.9rem; padding: 12px 30px; transition: all 0.15s ease; position: absolute;
+}
+.reveal-header { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: #d63384; margin-bottom: 5px; animation: fadeIn 0.8s ease; }
+.poem-container {
+    background: white; border-radius: 20px; padding: 35px; max-width: 500px; margin: 20px auto;
+    box-shadow: 0 8px 30px rgba(214, 51, 132, 0.12); border: 2px solid rgba(214, 51, 132, 0.1);
+}
+.poem-title { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #d63384; margin-bottom: 15px; }
+.poem-text { color: #666; font-size: 1rem; line-height: 1.9; font-style: italic; white-space: pre-line; }
+
+/* ── Celebration Hearts ── */
+.celebration-hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+.celebration-heart { position: absolute; font-size: 2rem; animation: celebrateFloat 4s ease-out forwards; }
+@keyframes celebrateFloat { 0% { opacity: 1; transform: translateY(0) scale(0); } 20% { transform: translateY(-50px) scale(1.2); } 100% { opacity: 0; transform: translateY(-400px) scale(0.5) rotate(45deg); } }
+.success-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(214, 51, 132, 0.1);
+    z-index: 50; animation: flashOverlay 0.6s ease forwards; pointer-events: none;
+}
+@keyframes flashOverlay { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ── Hint button ── */
+.hint-btn { background: none; border: none; color: #ccc; font-size: 0.8rem; cursor: pointer; margin-top: 10px; font-family: 'Poppins', sans-serif; transition: color 0.2s; }
+.hint-btn:hover { color: #d63384; }
+.hint-text { color: #d63384; font-size: 0.85rem; margin-top: 8px; font-style: italic; animation: fadeIn 0.4s ease; }
+
+/* ── Photo Timeline ── */
+.photo-timeline { max-width: 500px; margin: 25px auto; width: 100%; }
+.photo-timeline-title { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #d63384; margin-bottom: 20px; }
+.timeline-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.timeline-item {
+    position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(214, 51, 132, 0.15);
+    border: 3px solid rgba(214, 51, 132, 0.12); background: white; transition: transform 0.3s ease;
+    opacity: 0; transform: translateY(20px); animation: timelineReveal 0.6s ease forwards;
+}
+.timeline-item:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 30px rgba(214, 51, 132, 0.25); }
+@keyframes timelineReveal { to { opacity: 1; transform: translateY(0); } }
+.timeline-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.timeline-year {
+    position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+    color: white; padding: 20px 10px 8px; font-family: 'Dancing Script', cursive; font-size: 1.3rem; font-weight: 700;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+    #welcome-screen .title { font-size: 2.2rem; }
+    .puzzle-title { font-size: 1.6rem; }
+    .scramble-tile { width: 35px; height: 35px; font-size: 1rem; }
+    .answer-slot { width: 30px; height: 30px; font-size: 0.9rem; }
+    .honeycomb { grid-template-columns: repeat(5, 45px); }
+    .hex-cell { width: 45px; height: 45px; font-size: 1rem; }
+    .crossword-cell { width: 32px; height: 32px; font-size: 0.85rem; }
+    .final-message { font-size: 2rem; }
+    .ws-grid { grid-template-columns: repeat(7, 35px); }
+    .ws-cell { width: 35px; height: 35px; font-size: 1rem; }
+}
+
+/* ── Background themes ── */
+.bg-welcome { background: linear-gradient(135deg, #fce4ec, #f8bbd0, #fce4ec); }
+.bg-level1 { background: linear-gradient(135deg, #fce4ec, #f3e5f5); }
+.bg-level2 { background: linear-gradient(135deg, #f3e5f5, #e8eaf6); }
+.bg-level3 { background: linear-gradient(135deg, #fff8e1, #fff3e0); }
+.bg-level4 { background: linear-gradient(135deg, #e8eaf6, #e0f2f1); }
+.bg-level5 { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+.bg-final { background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f3e5f5); }
